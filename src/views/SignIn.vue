@@ -5,7 +5,7 @@
       style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px important!;"
     >
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://media.timeout.com/images/105702184/1024/768/image.jpg')] bg-cover bg-no-repeat"
+        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://www.kyuhoshi.com/wp-content/uploads/2014/09/night_sakura_at_kema_sakuranomiya_park_in_osaka.jpg')] bg-cover bg-no-repeat"
       >
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8 transition-all 1s ease-in-out backdrop-blur-[3px]">
           <h1
