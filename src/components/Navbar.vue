@@ -5,8 +5,13 @@
     <!-- menus -->
     <div class="flex gap-2 mr-2">
       <a class="underline px-1 py-2" href="/posts">Posts</a>
-      <a class="underline px-1 py-2" href="/signup">Signup</a>
+      <span class="underline px-1 py-2" @click="modalstate = !modalstate"
+        >Signup</span
+      >
       <a class="underline px-1 py-2" href="/posts">SignIn</a>
     </div>
   </nav>
 </template>
+<script setup>
+import { modalstate } from "../modalState.js";
+</script>
