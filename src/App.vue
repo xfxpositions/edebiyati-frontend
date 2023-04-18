@@ -1,3 +1,3 @@
 <template>
-  <h1>Son kez amk projesi</h1>
+  <h1 class="bg-sky-400 text-xl">Son kez amk projesi</h1>
 </template>
