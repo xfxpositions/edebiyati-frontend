@@ -2,7 +2,12 @@
 export default {
   content: ["./index.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: "Helvetica, Arial, sans-serif",
+        gentium: "Gentium Book Plus, times new roman, serif",
+      },
+    },
   },
   plugins: [],
 };
