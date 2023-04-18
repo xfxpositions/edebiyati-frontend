@@ -5,9 +5,9 @@
       style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px important!;"
     >
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 "
+        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://media.timeout.com/images/105702184/1024/768/image.jpg')] bg-cover bg-no-repeat"
       >
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8 transition-all 1s ease-in-out backdrop-blur-[3px]">
           <h1
             class="text-4xl text-center font-gentium font-bold leading-tight tracking-tight text-gray-900 dark:text-white"
           >
@@ -18,7 +18,7 @@
             <div>
               <label
                 for="email"
-                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white "
                 >E-Posta Adresiniz</label
               >
               <input
@@ -60,7 +60,7 @@
                   />
                 </div>
                 <div class="ml-3 text-sm select-none">
-                  <label for="remember" class="text-gray-500 select-none dark:text-gray-300"
+                  <label for="remember" class="text-gray-900 select-none dark:text-gray-300"
                     >Beni Hatırla</label
                   >
                 </div>
@@ -78,7 +78,7 @@
             >
               Giriş Yap!
             </button>
-            <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+            <p class="text-sm font-light text-gray-200 dark:text-gray-400">
               <p class="font-semibold">Ya da...</p>
               <a
                 href="#"

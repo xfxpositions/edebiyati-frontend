@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-between bg-[rgb(23,23,23)] text-gray-50 z-10">
+  <nav class="flex justify-between bg-[rgb(23,23,23)] text-gray-50">
     <!-- logo, for later -->
     <div class="logo"></div>
     <!-- menus -->
@@ -15,5 +15,5 @@
   </nav>
 </template>
 <script setup>
-import { modalstate } from "../modalState.js";
+import { modalstate } from "../modalState";
 </script>
