@@ -1,23 +1,44 @@
 <template>
-  <section class="bg-gray-50 dark:bg-gray-900">
+  <TransitionRoot appear :show="modalstate" as="template">
+    <Dialog as="div" @close="closeModal" class="relative z-10 bg-dark">
+        <div class="fixed inset-0 overflow-y-auto">
+        <div
+          class="flex min-h-full items-center justify-center p-4 text-center"
+        >
+          <TransitionChild
+            as="template"
+            enter="duration-300 ease-out"
+            enter-from="opacity-0 scale-95"
+            enter-to="opacity-100 scale-100"
+            leave="duration-200 ease-in"
+            leave-from="opacity-100 scale-100"
+            leave-to="opacity-0 scale-95"
+          >
+            <DialogPanel
+              class="w-full max-w-md  shadow-xl transition-all"
+            >
+              
+    <section class="bg-gray-50 dark:bg-gray-900 z-20">
     <div
       class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
+      style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px "
     >
       <div
         class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
       >
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1
-            class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+            class="text-4xl text-center font-gentium font-bold leading-tight tracking-tight text-gray-900 dark:text-white"
           >
-            Sign in to your account
+            Tekrardan Hoşgeldiniz!
           </h1>
+          <hr />
           <form class="space-y-4 md:space-y-6" action="#">
             <div>
               <label
                 for="email"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Your email</label
+                >E-Posta Adresiniz</label
               >
               <input
                 type="email"
@@ -33,8 +54,9 @@
               <label
                 for="password"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >Password</label
+                >Şifreniz</label
               >
+
               <input
                 v-model="password"
                 type="password"
@@ -56,31 +78,31 @@
                     required=""
                   />
                 </div>
-                <div class="ml-3 text-sm">
-                  <label for="remember" class="text-gray-500 dark:text-gray-300"
-                    >Remember me</label
+                <div class="ml-3 text-sm select-none">
+                  <label for="remember" class="text-gray-500 select-none dark:text-gray-300"
+                    >Beni Hatırla</label
                   >
                 </div>
               </div>
               <a
                 href="#"
                 class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >Forgot password?</a
+                >Şifreniz mi kayıp?</a
               >
             </div>
             <button
               type="submit"
-              class="w-full text-gray-900 bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+              class="w-full text-gray-50 bg-gray-900 shadow-md bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               @click="handleSubmit"
             >
-              Sign in
+              Giriş Yap!
             </button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-              Don’t have an account yet?
+              <p class="font-semibold">Ya da...</p>
               <a
                 href="#"
-                class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                >Sign up</a
+                class="font-bold underline  hover:underline dark:text-primary-500"
+                >Hesap Oluştur!</a
               >
             </p>
           </form>
@@ -89,28 +111,34 @@
     </div>
     <p>{{ email }}</p>
     <p>{{ password }}</p>
-  </section>
-</template>
-<script setup>
-import axios from "../utils/axios.js";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-const router = useRouter();
-const email = ref("");
-const password = ref("");
+            </section>
 
-const handleSubmit = async (e) => {
-  console.log({ email: email.value, password: password.value });
-  axios
-    .post("/user/login", { email: email.value, password: password.value })
-    .then((response) => {
-      console.log(response);
-      localStorage.setItem("token", response?.data?.token);
-      router.push({ path: "/" });
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
-  e.preventDefault();
-};
+             
+            </DialogPanel>
+          </TransitionChild>
+        </div>
+      </div>
+    </Dialog>
+  </TransitionRoot>
+</template>
+
+<script setup>
+import { modalstate } from "../modalState.js";
+import { ref } from "vue";
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/vue";
+
+const isOpen = ref(true);
+
+function closeModal() {
+  isOpen.value = false;
+}
+function openModal() {
+  isOpen.value = true;
+}
 </script>

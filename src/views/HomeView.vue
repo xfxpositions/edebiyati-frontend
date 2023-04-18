@@ -1,14 +1,7 @@
 <template>
   <div>
-    <transition name="modal">
-      <div
-        v-if="modalstate"
-        class="w-full fixed flex justify-center"
-        style="height: calc(100vh - 40px); z-index: 2"
-      >
-        <div class="w-6/12"><SignInVue></SignInVue></div>
-      </div>
-    </transition>
+    <SignInVue></SignInVue>
+
     <div
       class="p-8 pt-16 border-black border bg-[#819417]"
       :class="{ 'opacity-25': modalstate }"
