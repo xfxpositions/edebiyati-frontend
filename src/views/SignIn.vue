@@ -5,7 +5,7 @@
       style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px important!;"
     >
       <div
-        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://www.kyuhoshi.com/wp-content/uploads/2014/09/night_sakura_at_kema_sakuranomiya_park_in_osaka.jpg')] bg-cover bg-no-repeat"
+        class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://media.timeout.com/images/105702184/1024/768/image.jpg')] bg-cover bg-no-repeat"
       >
         <div class="p-6 space-y-4 md:space-y-6 sm:p-8 transition-all 1s ease-in-out backdrop-blur-[3px]">
           <h1
@@ -14,6 +14,16 @@
             Tekrardan Hoşgeldiniz!
           </h1>
           <hr />
+          <div class="flex flex-col gap-5 justify-center items-center">
+              <div class="bg-slate-50 bg-opacity-90 backdrop-blur-[10px] hover:bg-opacity-75 transition-all duration-200 ease-in-out cursor-pointer select-none border rounded-full inline-flex items-center px-5 py-2">
+              <img class="w-[18px] h-[18px] mr-2" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
+              <h2 class="text-sm font-medium">Google ile giriş yap.</h2>
+            </div>
+            <div class="bg-slate-50 bg-opacity-90 backdrop-blur-[10px] hover:bg-opacity-75 transition-all duration-200 ease-in-out  cursor-pointer select-none border rounded-full inline-flex items-center px-5 py-2">
+              <img class="w-[20px] h-[20px] mr-2" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"/>
+              <h2 class="text-sm font-medium">Github ile giriş yap.</h2>
+            </div>
+            </div>
           <form class="space-y-4 md:space-y-6" action="#">
             <div>
               <label
@@ -96,11 +106,19 @@
 </template>
 <script setup>
 import axios from "../utils/axios.js";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+
 const router = useRouter();
 const email = ref("");
 const password = ref("");
+
+onMounted(() => {
+  //if(localStorage.getItem("token")){
+	//router.push({ path: "/profile" });
+  //}
+  
+})
 
 const handleSubmit = async (e) => {
   console.log({ email: email.value, password: password.value });
