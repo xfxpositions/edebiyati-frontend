@@ -7,17 +7,18 @@
       </router-link>
     </div>
     <!-- menus -->
-    <div class="gap-2 mr-2 hidden sm:flex">
+    <div v-if="!isAuth" class="gap-2 mr-2 flex">
       <a class="underline px-1 py-2" href="/posts">Posts</a>
-      <span
-        class="underline px-1 py-2 cursor-pointer"
-        @click="modalstate = !modalstate"
-        >SignIn</span
+      <font-awesome-icon :icon="['fas', 'right-to-bracket']"
+        ><span class="underline px-1 py-2 cursor-pointer"
+          >SignIn</span
+        ></font-awesome-icon
       >
-      <a class="underline px-1 py-2" href="/posts">SignUp</a>
+      <router-link class="underline px-1 py-2" to="/signin">SignIn</router-link>
+      <router-link class="underline px-1 py-2" to="/signup">SignUp</router-link>
     </div>
     <!-- mobile menu -->
-    <div class="flex sm:hidden">
+    <div v-if="isAuth" class="flex">
       <NavbarMobile></NavbarMobile>
     </div>
   </nav>
@@ -25,4 +26,12 @@
 <script setup>
 import { modalstate } from "../modalState";
 import NavbarMobile from "./NavbarMobile.vue";
+import { ref, onMounted } from "vue";
+import { verifyToken } from "../utils/jwt.js";
+
+const isAuth = ref(false);
+onMounted(() => {
+  isAuth.value = Boolean(localStorage.getItem("currentUser"));
+  console.log(isAuth.value);
+});
 </script>

@@ -1,11 +1,11 @@
 <template>
-    <section class="bg-gray-50 dark:bg-gray-900">
+    <section class="bg-gray-50 dark:bg-gray-900 ">
       <div
-        class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 "
+        class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0 rounded-lg overflow-hidden "
         style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px important!;"
       >
         <div
-          class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://media.timeout.com/images/105702184/1024/768/image.jpg')] bg-cover bg-no-repeat"
+          class="w-full bg-white rounded-lg  shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://media.timeout.com/images/105702184/1024/768/image.jpg')] bg-cover bg-no-repeat"
         >
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8 transition-all 1s ease-in-out backdrop-blur-[3px]">
             <h1
@@ -24,7 +24,7 @@
               <h2 class="text-sm font-medium">Github ile kayıt olun.</h2>
             </div>
             </div>
-            <form class="space-y-4 md:space-y-6" action="#">
+            <form class="space-y-4 md:space-y-6" action="#" autocomplete="off">
               <div>
                 <label
                   for="email"
@@ -63,6 +63,7 @@
                 >
                 
                 <input
+
                   v-model="repassword"
                   type="password"
                   name="password"
@@ -71,12 +72,12 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required="true"
                 />
-                <p v-if="!filters.passwordMatches.value" class="bg-red-50 bg-opacity-60 text-sm text-red-700 font-semibold">{{ filters.passwordMatches.message }}</p>
+                <p v-if="!filters.passwordMatches.value" class="bg-red-50 bg-opacity-60 text-sm text-red-700 font-semibold rounded-md mt-2">{{ filters.passwordMatches.message }}</p>
                 
               </div>
               <div class="flex items-center justify-between">
                 <div class="flex items-start">
-                
+                  {{ responseText && responseText }}
                 </div>
               </div>
               <button
@@ -110,7 +111,8 @@
   const email = ref("");
   const password = ref("");
   const repassword = ref("");
-  const errorMessage = ref("");
+  const responseText = ref("");
+
 
   const sent = ref(false);
 
@@ -136,9 +138,11 @@
     axios
       .post("/user/create", { email: email.value, password: password.value })
       .then((response) => {
+        if(response.status == 200){
+          responseText.value == "Başarılı, Edebiyati.org'a hoşgeldiniz!"
+        }
         console.log(response);
-        localStorage.setItem("token", response?.data?.token);
-        router.push({ path: "/" });
+        router.push({ path: "/signin" });
       })
       .catch((error) => {
         console.log(error.message);
