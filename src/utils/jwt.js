@@ -1,9 +1,17 @@
-import jsonwebtoken from "jsonwebtoken";
-let secret = process.env.VUE_APP_JWT_SECRET;
+let secret2 = import.meta.env.VITE_JWT_SECRET;
+import { jwtVerify } from "jose";
 
-function verify(token) {
-  return jsonwebtoken.verify(token, secret);
+export async function verifyToken(token) {
+  try {
+    const secret = "evet";
+    const { payload, protectedHeader } = await jwtVerify(token, secret);
+    console.log("Token verified. Payload:", payload);
+    return payload;
+  } catch (error) {
+    console.error("Error verifying token:", error);
+  }
 }
+
 const deneme = () => {
   if (!secret) {
     console.log("no secret key defined in .env file!");
@@ -11,6 +19,6 @@ const deneme = () => {
     console.log("token => " + token);
   }
 };
-export { deneme };
+
 // local storage a aliyo tokeni verify ile kontrol ediyo varsa okey gec yoksa localstoraeda token bolumunu siliyor giris yap'a atiyor
 // burasi sadece jwt icin javascript fonksiyonlarini tutuyo

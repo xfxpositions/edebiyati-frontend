@@ -4,6 +4,7 @@ import AboutView from "../views/AboutView.vue";
 import SignIn from "../views/SignIn.vue";
 import SignUp from "../views/SignUp.vue";
 import Profile from "../views/ProfileView.vue";
+import Logout from "../views/LogoutView.vue";
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     name: "SignUp",
     path: "/signup",
     component: SignUp,
+  },
+  {
+    name: "Logout",
+    path: "/logout",
+    component: Logout,
   },
 ];
 const router = createRouter({

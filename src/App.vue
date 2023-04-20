@@ -1,6 +1,5 @@
 <template>
   <Navbar></Navbar>
-  <img :src="userAvatar" alt="User Avatar" />
   <router-view class="router-view" v-slot="{ Component }">
     <transition name="vue-transition">
       <component @topbarhide="topbartoggle" :is="Component" />

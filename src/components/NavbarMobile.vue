@@ -86,10 +86,11 @@ import { onMounted, ref } from "vue";
 import axiosUtil from "../utils/axios.js";
 import Loader from "../components/Loader.vue";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+
 const avatar = ref("");
 onMounted(async () => {
   await axiosUtil
-    .get("/user/fetch/6432bf665d2b1fcf7bfbaba3 ")
+    .get(`/user/fetch/${localStorage.getItem("currentUser")}`)
     .then((result) => {
       avatar.value = result.data?.avatar;
       console.log("avatar=>" + avatar.value);
