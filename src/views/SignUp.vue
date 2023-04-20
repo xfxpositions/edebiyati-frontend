@@ -17,11 +17,11 @@
             <div class="flex flex-col gap-5 justify-center items-center">
               <div class="bg-slate-50 bg-opacity-90 backdrop-blur-[10px] hover:bg-opacity-75 transition-all duration-200 ease-in-out cursor-pointer select-none border rounded-full inline-flex items-center px-5 py-2">
               <img class="w-[18px] h-[18px] mr-2" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
-              <h2 class="text-sm font-medium">Google ile giriş yap.</h2>
+              <h2 class="text-sm font-medium">Google ile kayıt olun.</h2>
             </div>
             <div class="bg-slate-50 bg-opacity-90 backdrop-blur-[10px] hover:bg-opacity-75 transition-all duration-200 ease-in-out  cursor-pointer select-none border rounded-full inline-flex items-center px-5 py-2">
               <img class="w-[20px] h-[20px] mr-2" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"/>
-              <h2 class="text-sm font-medium">Github ile giriş yap.</h2>
+              <h2 class="text-sm font-medium">Github ile kayıt olun.</h2>
             </div>
             </div>
             <form class="space-y-4 md:space-y-6" action="#">
@@ -47,24 +47,23 @@
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Şifreniz</label
                 >
-  
                 <input
-                  v-model="password"
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  class="bg-gray-50 border mb-4 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  required="true"
+                v-model="password"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="••••••••"
+                class="bg-gray-50 border mb-4 border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required="true"
                 />
                 <label
-                  for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                  >Şifrenizi tekrar girmeye ne dersiniz</label
+                for="password"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Şifrenizi tekrar girmeye ne dersiniz</label
                 >
-  
+                
                 <input
-                  v-model="password"
+                  v-model="repassword"
                   type="password"
                   name="password"
                   id="password"
@@ -72,6 +71,8 @@
                   class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   required="true"
                 />
+                <p v-if="!filters.passwordMatches.value" class="bg-red-50 bg-opacity-60 text-sm text-red-700 font-semibold">{{ filters.passwordMatches.message }}</p>
+                
               </div>
               <div class="flex items-center justify-between">
                 <div class="flex items-start">
@@ -103,16 +104,37 @@
   </template>
   <script setup>
   import axios from "../utils/axios.js";
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
   import { useRouter } from "vue-router";
   const router = useRouter();
   const email = ref("");
   const password = ref("");
+  const repassword = ref("");
+  const errorMessage = ref("");
+
+  const sent = ref(false);
+
+  const filters = ref({
+    passwordMatches:{
+      value:true,
+      message:""
+    },
+  })
   
+  watch([password, repassword], ([newPassword, newRepassword]) => {
+    if (newPassword !== newRepassword) {
+      filters.value.passwordMatches.message = "Şifreler birbiri ile uyuşmuyor.";
+      filters.value.passwordMatches.value = false; 
+    } else {
+      filters.value.passwordMatches.message = '';
+      filters.value.passwordMatches = true;
+    }
+  });
   const handleSubmit = async (e) => {
+    sent.value = true;
     console.log({ email: email.value, password: password.value });
     axios
-      .post("/user/login", { email: email.value, password: password.value })
+      .post("/user/create", { email: email.value, password: password.value })
       .then((response) => {
         console.log(response);
         localStorage.setItem("token", response?.data?.token);

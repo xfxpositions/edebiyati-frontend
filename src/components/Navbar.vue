@@ -7,17 +7,22 @@
       </router-link>
     </div>
     <!-- menus -->
-    <div class="flex gap-2 mr-2">
+    <div class="gap-2 mr-2 hidden sm:flex">
       <a class="underline px-1 py-2" href="/posts">Posts</a>
       <span
         class="underline px-1 py-2 cursor-pointer"
         @click="modalstate = !modalstate"
-        >Signup</span
+        >SignIn</span
       >
-      <a class="underline px-1 py-2" href="/posts">SignIn</a>
+      <a class="underline px-1 py-2" href="/posts">SignUp</a>
+    </div>
+    <!-- mobile menu -->
+    <div class="flex sm:hidden">
+      <NavbarMobile></NavbarMobile>
     </div>
   </nav>
 </template>
 <script setup>
 import { modalstate } from "../modalState";
+import NavbarMobile from "./NavbarMobile.vue";
 </script>
