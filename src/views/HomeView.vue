@@ -26,6 +26,7 @@
   </div>
 </template>
 <script setup>
+import { onMounted } from "vue";
 import { ref } from "vue";
 import SignInVue from "../components/SignIn.vue";
 import { modalstate } from "../modalState";
