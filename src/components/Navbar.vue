@@ -11,7 +11,9 @@
       <div v-for="link in navbar">
         <router-link :to="link.path">
           <font-awesome-icon :icon="['fas', link.icon]"></font-awesome-icon>
-          <span class="underline px-1 py-2 cursor-pointer">{{ link.name }}</span>
+          <span class="underline px-1 py-2 cursor-pointer">{{
+            link.name
+          }}</span>
         </router-link>
       </div>
     </div>
@@ -22,15 +24,15 @@
   </nav>
 </template>
 <script setup>
-import navbar from './Navbar.js'
-import { modalstate } from '../modalState'
-import NavbarMobile from './NavbarMobile.vue'
-import { ref, onMounted } from 'vue'
-import { verifyToken } from '../utils/jwt.js'
+import navbar from "./Navbar.js";
+import { modalstate } from "../modalState";
+import NavbarMobile from "./NavbarMobile.vue";
+import { ref, onMounted } from "vue";
+import { verifyToken } from "../utils/jwt.js";
 
-const isAuth = ref(false)
+const isAuth = ref(false);
 onMounted(() => {
-  isAuth.value = Boolean(localStorage.getItem('currentUser'))
-  console.log(isAuth.value)
-})
+  isAuth.value = Boolean(localStorage.getItem("currentUser"));
+  console.log(isAuth.value);
+});
 </script>

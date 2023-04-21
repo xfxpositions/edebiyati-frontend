@@ -32,33 +32,35 @@
           <MenuItem class="px-1 pl-2">
             <router-link
               to="/write"
-              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
+              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <button class="group-hover:underline">Yaz</button>
+              <font-awesome-icon :icon="['fas', 'pen-to-square']" />
+              <button class="group-hover:underline ml-1">Yaz</button>
             </router-link>
           </MenuItem>
           <MenuItem class="px-1 pl-2">
             <router-link
               to="/profile"
-              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
-            >
-              <button class="group-hover:underline">Profilim</button>
+              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
+              ><font-awesome-icon :icon="['fas', 'user']" />
+              <button class="group-hover:underline ml-1">Profilim</button>
             </router-link>
           </MenuItem>
           <MenuItem class="px-1 pl-2">
             <router-link
               to="/posts/{userid}"
-              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
+              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <button class="group-hover:underline">Gönderilerim</button>
+              <font-awesome-icon :icon="['fas', 'file-lines']" />
+              <button class="group-hover:underline ml-1">Gönderilerim</button>
             </router-link>
           </MenuItem>
           <MenuItem class="px-1 pl-2">
             <router-link
               to="/favorites"
-              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
-            >
-              <button class="group-hover:underline">
+              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
+              ><font-awesome-icon :icon="['fas', 'bookmark']" />
+              <button class="group-hover:underline ml-1">
                 <span>Favorilerim</span>
               </button>
             </router-link>
@@ -71,8 +73,9 @@
           <MenuItem class="px-1 pl-2">
             <router-link
               to="/logout"
-              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
+              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
+              <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
               <button class="group-hover:underline">Çıkış Yap</button>
             </router-link>
           </MenuItem>
@@ -93,6 +96,9 @@ onMounted(async () => {
     .get(`/user/fetch/${localStorage.getItem("currentUser")}`)
     .then((result) => {
       avatar.value = result.data?.avatar;
+      avatar.value = avatar.value
+        ? avatar.value
+        : "https://upload.wikimedia.org/wikipedia/commons/1/16/K2-big.jpg";
       console.log("avatar=>" + avatar.value);
     });
 });
