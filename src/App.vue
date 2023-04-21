@@ -23,6 +23,26 @@ onMounted(async () => {
 })
 const userAvatar = user.avatar
 </script>
+<style>
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #212121;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(190, 190, 190);
+}
+</style>
 <style scoped>
 /*.vue-transition-leave-active {
   transition: 0.5s ease;
