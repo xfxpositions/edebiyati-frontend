@@ -1,8 +1,8 @@
 <template>
   <div class="w-full grid grid-cols-12">
-    <div class="col-span-8 col-start-3">
+    <div class="col-span-12 lg:col-span-8 lg:col-start-3">
       <section>
-        <div class="background rounded-lg w-full" style="height: calc(100vh - 40px)">
+        <div class="max-h-(screen-h-50) background rounded-lg mt-5">
           <!-- Info Top section -->
           <div class="-200 p-4">
             <span class="text-black">Posted on April 1st, 2023 by John Doe</span>
@@ -10,23 +10,25 @@
           <!-- Author section -->
           <div class="flex p-4 w-full">
             <div class="flex items-center w-6/12">
-              <img class="w-12 h-12 rounded-full mr-4" src="../../src/assets/profile.png" alt="Author Photo" />
+              <img class="w-12 h-12 rounded-full mr-4" src="../assets/profile.png" alt="Author Photo" />
               <div>
-                <h2 class="text-lg font-semibold text-gray-900">John Doe</h2>
-                <p class="text-gray-600 justify-self-end">Author of this article</p>
+                <h2 class="text-lg font-semibold text-gray-700">John Doe</h2>
+                <p class="text-gray-700 justify-self-end">Author of this article</p>
               </div>
             </div>
             <div class="h-full text-slate-100 w-6/12 text-xs">
               <div class="flex flex-wrap justify-end">
                 <div class="mr-2 mt-1" style="height: fit-content; width: fit-content">
-                  <a href="#" target="_blank"><div class="tag-box p-1 h-fit flex items-center">Tag</div></a>
+                  <a href="#" target="_blank">
+                    <div class="tag-box p-1 h-fit flex items-center">Tags</div>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
           <!-- Image section -->
-          <div class="">
-            <img class="h-full w-full object-cover object-center rounded-lg" src="../../src/assets/image.jpg" alt="Main Image" />
+          <div class="" style="height: 70vh">
+            <img class="h-full w-full object-cover object-center rounded-lg" src="../assets/image.jpg" alt="Main Image" />
           </div>
           <!-- Title section -->
           <div class="pl-4 pr-4">
@@ -34,34 +36,19 @@
           </div>
 
           <!-- Preview section -->
-          <div class="px-4 text-black-900 overflow-hidden transition-all duration-200 ease-in-out" ref="container">
+          <div class="px-4 text-gray-900 overflow-hidden transition-all duration-200 ease-in-out" ref="container">
             <!--<div ref="longabbr" :hidden="data.showmore != true" v-html="'<p>' + data.longabbr + '</p>'"></div>-->
             <!--<div ref="abbr" :hidden="data.showmore == true" v-html="data.abbr + '...'"></div>-->
-            <div ref="abbr">Abbrevation</div>
+            <div ref="abbr">Content</div>
           </div>
-          <!-- <div v-if="data.showmore == true" class="font-bold pl-4 show-more" @click="showless(index)">Show Less</div>-->
-          <div class="font-bold pl-4 show-more text-black" @click="showmore(index)">Show More</div>
+          <!--<div v-if="data.showmore == true" class="font-bold pl-4 show-more" @click="showless(index)">Show Less</div>-->
+          <div class="font-bold pl-4 show-more" @click="showmore(index)">Show More</div>
           <div id="container" class="mt-2">
             <button class="learn-more">
               <span class="circle flex items-center" aria-hidden="true">
                 <span class="icon arrow"></span>
               </span>
-              <span class="button-text flex items-center ml-8">
-                <!--<router-link
-                  :to="{
-                    name: 'blogDetail',
-                    params: {
-                      title: data.title.replace(/ /g, '-')
-                    },
-                    query: {
-                      id: data._id
-                    }
-                  }"
-                >
-                  Learn More
-                </router-link>-->
-                Learn More
-              </span>
+              <span class="button-text flex items-center ml-8">Learn More</span>
             </button>
           </div>
 
