@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="w-full grid grid-cols-12 height transition duration-500" :class="{ opacitylow: showTag }">
-      <div class="col-span-2">
+      <div class="col-span-2 sidenav mr-1">
         <button class="text-white" @click="aaa">Add Tag</button>
       </div>
       <div class="col-span-12 lg:col-span-8 transition-all duration-200" ref="opacity1">
@@ -31,7 +31,7 @@
         </div>
       </div>
       <!--Sidenav-->
-      <div class="hidden lg:grid lg:col-span-2 sidenav">
+      <div class="hidden lg:grid lg:col-span-2 sidenav ml-1">
         <div class="tags-section mt-1">
           <div class="flex flex-wrap">
             <div v-for="(tag, index) in tags" class="mr-2 mt-1" style="height: fit-content; width: fit-content">
@@ -259,7 +259,6 @@ const sidenavopen = () => {
   max-height: 100vh;
   top: 0px;
   right: 0;
-  margin-left: 5px;
   overflow-y: scroll;
 }
 .text-area-box {
