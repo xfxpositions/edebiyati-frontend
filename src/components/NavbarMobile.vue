@@ -34,7 +34,10 @@
               to="/write"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <font-awesome-icon :icon="['fas', 'pen-to-square']" />
+              <font-awesome-icon
+                :icon="['fas', 'pen-to-square']"
+                class="mr-1"
+              />
               <button class="group-hover:underline ml-1">Yaz</button>
             </router-link>
           </MenuItem>
@@ -42,7 +45,7 @@
             <router-link
               to="/profile"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
-              ><font-awesome-icon :icon="['fas', 'user']" />
+              ><font-awesome-icon :icon="['fas', 'user']" class="mr-1" />
               <button class="group-hover:underline ml-1">Profilim</button>
             </router-link>
           </MenuItem>
@@ -51,7 +54,7 @@
               to="/posts/{userid}"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <font-awesome-icon :icon="['fas', 'file-lines']" />
+              <font-awesome-icon :icon="['fas', 'file-lines']" class="mr-1" />
               <button class="group-hover:underline ml-1">Gönderilerim</button>
             </router-link>
           </MenuItem>
@@ -59,7 +62,7 @@
             <router-link
               to="/favorites"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
-              ><font-awesome-icon :icon="['fas', 'bookmark']" />
+              ><font-awesome-icon :icon="['fas', 'bookmark']" class="mr-1" />
               <button class="group-hover:underline ml-1">
                 <span>Favorilerim</span>
               </button>
@@ -75,7 +78,10 @@
               to="/logout"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <font-awesome-icon :icon="['fas', 'right-from-bracket']" />
+              <font-awesome-icon
+                :icon="['fas', 'right-from-bracket']"
+                class="mr-1"
+              />
               <button class="group-hover:underline">Çıkış Yap</button>
             </router-link>
           </MenuItem>

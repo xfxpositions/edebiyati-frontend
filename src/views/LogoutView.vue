@@ -9,8 +9,5 @@ onMounted(() => {
   localStorage.setItem("currentUser", "");
   localStorage.setItem("token", "");
   localStorage.setItem("isAuth", false);
-  router.push("/").then(() => {
-    location.reload();
-  });
 });
 </script>
