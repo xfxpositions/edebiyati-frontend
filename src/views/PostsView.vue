@@ -90,29 +90,59 @@
 <script setup>
 import '../../src/assets/learnmore.scss'
 import axiosUtil from '../utils/axios.js'
-import { onMounted, ref } from 'vue'
-let page = ref(1)
+import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
+let currentpage = ref(1)
 let posts = ref([])
 async function fetchPost(page) {
   axiosUtil.get('/post/fetchall/' + page).then(result => {
-    result.data.forEach(element => {
-      posts.value.push(element)
-    })
-    posts.value.forEach(post => {
-      ///write sayfasından gönderilen post olduğu zaman commentları kaldır
-      /*post.longabbr = data.content.split('<p>')[1].split('</p>')[0]
+    console.log(result.data)
+    if (result.data.length > 0) {
+      currentpage.value++
+      result.data.forEach(element => {
+        posts.value.push(element)
+      })
+      posts.value.forEach(post => {
+        ///write sayfasından gönderilen post olduğu zaman commentları kaldır
+        /*post.longabbr = data.content.split('<p>')[1].split('</p>')[0]
       let array = data.content.split(' ').slice(0, 26)
       let string = array.join(' ')
       post.abbr = string*/
-      let date = new Date(post.created_at * 1000)
-      let month = date.toLocaleString('tr-TR', { month: 'long' })
-      let day = date.toLocaleString('tr-TR', { day: 'numeric' })
-      let year = date.toLocaleString('tr-TR', { year: 'numeric' })
-      let fulldate = day + ' ' + month + ' ' + year
-      post.fulldate = fulldate
-    })
+        let date = new Date(post.created_at * 1000)
+        let month = date.toLocaleString('tr-TR', { month: 'long' })
+        let day = date.toLocaleString('tr-TR', { day: 'numeric' })
+        let year = date.toLocaleString('tr-TR', { year: 'numeric' })
+        let fulldate = day + ' ' + month + ' ' + year
+        post.fulldate = fulldate
+      })
+    }
   })
 }
+let intersecting = ref(false)
+
+const observer = () => {
+  if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+    intersecting.value = true
+  } else {
+    intersecting.value = false
+  }
+}
+
+// Invoke the observer function to start observing the scroll event
+
+watch(
+  () => intersecting.value,
+  newValue => {
+    if (newValue == true) {
+      fetchPost(currentpage.value)
+    }
+  }
+)
+onMounted(() => {
+  window.addEventListener('scroll', observer)
+})
+onBeforeUnmount(() => {
+  window.removeEventListener('scroll', observer)
+})
 const showmore = index => {
   //posts[index].showmore = true
   console.log(index)
@@ -121,7 +151,7 @@ const showless = index => {
   posts[index].showmore = false
 }
 onMounted(async () => {
-  await fetchPost(page.value)
+  await fetchPost(currentpage.value)
 })
 </script>
 <style scoped>
