@@ -4,9 +4,6 @@
       class="w-full grid grid-cols-12 height transition duration-500"
       :class="{ opacitylow: showTag }"
     >
-      <div class="col-span-2 sidenav mr-1">
-        <button class="text-white" @click="aaa">Add Tag</button>
-      </div>
       <div
         class="col-span-12 lg:col-span-8 transition-all duration-200"
         ref="opacity1"
@@ -21,14 +18,10 @@
               autocomplete="off"
             />
             <span class="field__label-wrap" aria-hidden="true">
-              <span class="field__label text-white">Enter Title</span>
+              <span class="field__label text-white">Başlık</span>
             </span>
           </div>
-          <div
-            class="wrapper"
-            ref="wrapper"
-            :style="`background-image: url(${image})`"
-          >
+          <div class="wrapper" ref="wrapper">
             <input
               class="input"
               type="file"
