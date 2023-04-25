@@ -7,7 +7,8 @@ import Profile from "../views/ProfileView.vue";
 import Logout from "../views/LogoutView.vue";
 import PostsView from "../views/PostsView.vue";
 import WriteView from "../views/WriteView.vue";
-import WriteTest from "../views/WriteTest.vue";
+import PostsViewTest from "../views/PostsViewTest.vue";
+//import WriteTest from "../views/WriteTest.vue";
 const routes = [
   {
     path: "/",
@@ -50,9 +51,9 @@ const routes = [
     component: WriteView,
   },
   {
-    name: "WriteTest",
-    path: "/writetest",
-    component: WriteTest,
+    name: "PostsTest",
+    path: "/poststest",
+    component: PostsViewTest,
   },
 ];
 const router = createRouter({

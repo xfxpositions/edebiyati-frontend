@@ -1,126 +1,56 @@
 <template>
-  <div>
-    <div
-      class="w-full grid grid-cols-12 height transition duration-500"
-      :class="{ opacitylow: showTag }"
-    >
-      <div
-        class="col-span-12 lg:col-span-8 transition-all duration-200"
-        ref="opacity1"
-      >
-        <div class="text-area-box p-2">
-          <div class="field field_v2">
-            <input
-              id="last-name"
-              class="field__input text-white"
-              v-model="title"
-              placeholder="Title"
-              autocomplete="off"
-            />
-            <span class="field__label-wrap" aria-hidden="true">
-              <span class="field__label text-white">Başlık</span>
-            </span>
-          </div>
-          <div class="wrapper" ref="wrapper">
-            <input
-              class="input"
-              type="file"
-              accept="image/*"
-              ref="fileInput"
-              @change="handleFileInput"
-            />
-          </div>
-          <div
-            class="image flex justify-center items-center"
-            :class="{ opacityhigh: image == null, opacitynone: image != null }"
-            @click="handleClick"
-            @mouseover="opacitylow"
-            @mouseleave="opacityhigh"
-            ref="img"
-          >
-            <div>Select İmage</div>
-          </div>
-          <div class="mt-5 ql-custom">
-            <QuillEditor
-              content-type="html"
-              v-model="editorHtml"
-              theme="snow"
-              :options="editorOptions"
-            />
-          </div>
-        </div>
+  <div class="md:mx-32 md:my-24 my-14 mx-2">
+    <div class="p-12 flex flex-col gap-5">
+      <input
+        placeholder="Başlık"
+        type="text"
+        class="font-gentium text-4xl focus:outline-none"
+        v-model="title"
+      />
+      <QuillEditor
+        theme="bubble"
+        :contentType="'html'"
+        :options="editorOptions"
+        placeholder="Muhteşem şeyler yazın"
+        style="
+          font-family: Gentium Book Plus, times new roman, serif;
+          font-size: large;
+        "
+      />
+    </div>
+    <hr />
+    <div class="grid sm:grid-cols-2 grid-cols-1 md:p-12 min-h-[400px]">
+      <div class="p-12">
+        <ImageUpload @image-upload="onImageUpload"></ImageUpload>
       </div>
-      <!--Sidenav-->
-      <div class="hidden lg:grid lg:col-span-2 sidenav ml-1">
-        <div class="tags-section mt-1">
-          <div class="flex flex-wrap">
-            <div
-              v-for="(tag, index) in tags"
-              class="mr-2 mt-1"
-              style="height: fit-content; width: fit-content"
-            >
-              <div class="tag-box p-1 h-fit flex items-center">{{ tag }}</div>
-            </div>
-          </div>
-          <button
-            class="upload-button mt-1 ml-1 mb-2 text-xs col-span-2 md:col-span-1"
-            @click="addtag"
-          >
-            Tags
-            <font-awesome-icon :icon="['fas', 'tags']" size="lg" />
-          </button>
-        </div>
-        <div class="w-full h-full flex justify-end items-end">
-          <div class="w-full grid grid-cols-2">
-            <div class="flex justify-center">
-              <button
-                class="upload-button mt-1 ml-1 mb-2 text-xs col-span-2 md:col-span-1"
-                @click="he"
-              >
-                Modal
-              </button>
-            </div>
-            <div class="flex justify-center">
-              <button
-                class="upload-button ml-1 mt-1 mb-2 text-xs col-span-2 md:col-span-1"
-                @click="qlUpload"
-              >
-                Upload
-              </button>
-            </div>
-          </div>
-        </div>
+      <div class="p-12">
+        <TagSearch @on-tag-select="onTagSelect"></TagSearch>
       </div>
     </div>
+    <button
+      class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right fixed-button"
+      @click="qlUpload"
+    >
+      Gönder
+    </button>
+    <!--Sidenav-->
   </div>
-  <Transition name="transition">
-    <AddTag
-      v-if="showTag"
-      @tag-close="tagclose"
-      @tag-data="tagdata"
-      :proptags="tags"
-    ></AddTag>
-  </Transition>
 </template>
 <script setup>
-import Modal from "./Modals/MyModal.vue";
-import AddTag from "./Modals/AddTag.vue";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
+
 import "../assets/VueQuill.css";
 import "../assets/input.css";
 import turndown from "turndown";
 import axiosUtil from "../utils/axios.js";
+import TagSearch from "../components/TagSearch.vue";
+import ImageUpload from "../components/ImageUpload.vue";
 
-const showTag = ref(false);
 const tags = ref([]);
 const selectedFile = ref(null);
-const image = ref(null);
 const title = ref("");
-const img = ref(null);
-const wrapper = ref(null);
-const fileInput = ref(null);
 const editorHtml = ref("");
 
 const editorOptions = {
@@ -136,72 +66,39 @@ const editorOptions = {
       [{ color: [] }, { background: [] }], // dropdown with defaults from theme
       [{ align: [] }],
       ["link", "image"],
-
       ["clean"], // remove formatting button
     ],
   },
 };
-const resizeHandler = () => {
-  img.value.style.width = wrapper.value.offsetWidth + "px";
-};
-onMounted(async () => {
-  window.addEventListener("resize", resizeHandler);
-  setTimeout(() => {
-    img.value.style.width = wrapper.value.offsetWidth + "px";
-    img.value.style.marginTop = 0 - wrapper.value.offsetHeight + "px";
-  }, 10);
-});
 
-const handleFileInput = (event) => {
-  selectedFile.value = event.target.files[0];
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  reader.onload = () => {
-    const base64Data = reader.result.split(",")[1];
-    const dataUrl = `data:${file.type};base64,${base64Data}`;
-    image.value = dataUrl;
-  };
-  reader.readAsDataURL(file);
+const onTagSelect = (e) => {
+  tags.value = e;
 };
 
-const handleClick = () => {
-  fileInput.value.click();
-};
-const opacitylow = () => {
-  wrapper.value.classList.add("opacitylow");
-};
-
-const opacityhigh = () => {
-  wrapper.value.classList.remove("opacitylow");
-};
-const addtag = () => {
-  showTag.value = true;
-};
-const tagclose = () => {
-  showTag.value = false;
-};
-
-const modalopen = () => {
-  // handle modal open here
-};
-const he = () => {
-  console.log(document.querySelector(".ql-editor").innerHTML);
+const onImageUpload = (e) => {
+  console.log(e);
+  selectedFile.value = e;
 };
 
 const qlUpload = () => {
   //upload image
   let imageForm = new FormData();
   imageForm.append("image", selectedFile.value);
-
+  const config = {
+    onUploadProgress: (progressEvent) => console.log(progressEvent.loaded),
+    timeout: 5000000,
+  };
   axiosUtil
-    .post("/post/upload_image", imageForm, { timeout: 5000000 })
+    .post("/post/upload_image", imageForm, config)
     .then((response) => {
       let image_url = response.data.url;
       //post body
       //html to markdown
       var turndownService = new turndown();
       let content = {};
-      content.html = editorHtml.value;
+      let html = document.querySelector(".ql-editor").innerHTML;
+      console.log("html=?>" + html);
+      content.html = html;
       content.markdown = turndownService.turndown(editorHtml.value);
 
       let postData = {
@@ -213,9 +110,9 @@ const qlUpload = () => {
         image: image_url,
         title: title.value,
       };
-
+      console.log(postData);
       axiosUtil
-        .post("/post/create", postData)
+        .post("/post/create", postData, { timeout: 10000 })
         .then((response) => {
           console.log("Post was successful:", response);
         })
@@ -227,13 +124,15 @@ const qlUpload = () => {
       console.error("There was an error:", error);
     });
 };
-
-const sidenavopen = () => {
-  // handle sidenav open here
-};
 </script>
 
 <style scoped>
+.fixed-button {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+}
 .sidenav-container {
   position: fixed;
   width: 100%;
