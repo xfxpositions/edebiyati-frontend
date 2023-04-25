@@ -7,6 +7,7 @@ import Profile from "../views/ProfileView.vue";
 import Logout from "../views/LogoutView.vue";
 import PostsView from "../views/PostsView.vue";
 import WriteView from "../views/WriteView.vue";
+import PostsViewTest from "../views/PostsViewTest.vue";
 //import WriteTest from "../views/WriteTest.vue";
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     name: "Write",
     path: "/write",
     component: WriteView,
+  },
+  {
+    name: "PostsTest",
+    path: "/poststest",
+    component: PostsViewTest,
   },
 ];
 const router = createRouter({

@@ -8,9 +8,8 @@
         v-model="title"
       />
       <QuillEditor
-        content-type="html"
-        v-model="editorHtml"
         theme="bubble"
+        :contentType="'html'"
         :options="editorOptions"
         placeholder="Muhteşem şeyler yazın"
         style="
@@ -38,9 +37,7 @@
   </div>
 </template>
 <script setup>
-import Modal from "./Modals/MyModal.vue";
-import AddTag from "./Modals/AddTag.vue";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
@@ -51,14 +48,9 @@ import axiosUtil from "../utils/axios.js";
 import TagSearch from "../components/TagSearch.vue";
 import ImageUpload from "../components/ImageUpload.vue";
 
-const showTag = ref(false);
 const tags = ref([]);
 const selectedFile = ref(null);
-const image = ref(null);
 const title = ref("");
-const img = ref(null);
-const wrapper = ref(null);
-const fileInput = ref(null);
 const editorHtml = ref("");
 
 const editorOptions = {
@@ -77,29 +69,6 @@ const editorOptions = {
       ["clean"], // remove formatting button
     ],
   },
-};
-
-const handleFileInput = (event) => {
-  selectedFile.value = event.target.files[0];
-  const file = event.target.files[0];
-  const reader = new FileReader();
-  reader.onload = () => {
-    const base64Data = reader.result.split(",")[1];
-    const dataUrl = `data:${file.type};base64,${base64Data}`;
-    image.value = dataUrl;
-  };
-  reader.readAsDataURL(file);
-};
-
-const handleClick = () => {
-  fileInput.value.click();
-};
-const opacitylow = () => {
-  wrapper.value.classList.add("opacitylow");
-};
-
-const opacityhigh = () => {
-  wrapper.value.classList.remove("opacitylow");
 };
 
 const onTagSelect = (e) => {
@@ -127,7 +96,9 @@ const qlUpload = () => {
       //html to markdown
       var turndownService = new turndown();
       let content = {};
-      content.html = editorHtml.value;
+      let html = document.querySelector(".ql-editor").innerHTML;
+      console.log("html=?>" + html);
+      content.html = html;
       content.markdown = turndownService.turndown(editorHtml.value);
 
       let postData = {
@@ -139,7 +110,7 @@ const qlUpload = () => {
         image: image_url,
         title: title.value,
       };
-
+      console.log(postData);
       axiosUtil
         .post("/post/create", postData, { timeout: 10000 })
         .then((response) => {
