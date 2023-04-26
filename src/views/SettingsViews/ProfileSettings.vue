@@ -13,10 +13,9 @@
       <div class="text-gray-500"><img class="object-cover object-center avatar" :src="data.avatar" alt="Main Image" /></div>
     </div>
 
-    <transition name="transition"><EMail v-if="emailmodal" @eventA="emailModal"></EMail></transition>
-
-    <transition name="transition"><EMail v-if="usernamemodal" @eventA="usernameModal"></EMail></transition>
-    <transition name="transition"><EMail v-if="ppmodal" @eventA="ppModal"></EMail></transition>
+    <transition name="transition"><EMail :email="data.email" v-if="emailmodal" @eventA="emailModal" @saveInput="changeEmail"></EMail></transition>
+    <transition name="transition"><UserName :username="data.name" v-if="usernamemodal" @eventA="usernameModal"></UserName></transition>
+    <transition name="transition"><ProfilePhoto :avatar="data.avatar" v-if="ppmodal" @eventA="ppModal"></ProfilePhoto></transition>
   </div>
 </template>
 <script setup>
@@ -39,6 +38,11 @@ const usernameModal = () => {
 const ppModal = () => {
   ppmodal.value = !ppmodal.value
   console.log(ppmodal.value)
+}
+
+const changeEmail = email => {
+  console.log(email)
+  //data.value.email = email
 }
 const data = ref({})
 const profileget = () => {

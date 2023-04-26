@@ -29,10 +29,7 @@
   --uiFieldBorderWidth: var(--fieldBorderWidth, 2px);
   --uiFieldPaddingRight: var(--fieldPaddingRight, 1rem);
   --uiFieldPaddingLeft: var(--fieldPaddingLeft, 1rem);
-  --uiFieldBorderColorActive: var(
-    --fieldBorderColorActive,
-    rgba(22, 22, 22, 1)
-  );
+  --uiFieldBorderColorActive: var(--fieldBorderColorActive, rgba(22, 22, 22, 1));
   display: var(--fieldDisplay, inline-flex);
   position: relative;
   font-size: var(--fieldFontSize, 1rem);
@@ -42,10 +39,12 @@
   box-sizing: border-box;
   width: var(--fieldWidth, 100%);
   height: var(--fieldHeight, 3rem);
-  padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight)
-    var(--fieldPaddingBottom, 0.5rem) var(--uiFieldPaddingLeft);
-  border-bottom: var(--uiFieldBorderWidth) solid
-    var(--fieldBorderColor, rgba(0, 0, 0, 0.25));
+  padding: var(--fieldPaddingTop, 1.25rem) var(--uiFieldPaddingRight) var(--fieldPaddingBottom, 0.5rem) var(--uiFieldPaddingLeft);
+  border-bottom: var(--uiFieldBorderWidth) solid var(--fieldBorderColor, rgba(0, 0, 0, 0.25));
+}
+.field__input::placeholder {
+  color: rgb(0, 0, 0);
+  opacity: 1; /* Firefox */
 }
 
 .field__input:focus {
@@ -78,7 +77,7 @@
   left: 0;
 }
 .field__label-wrap::after {
-  content: "";
+  content: '';
   box-sizing: border-box;
   width: 100%;
   height: 0;
@@ -96,8 +95,7 @@
   top: calc(50% - 0.5em);
   line-height: 1;
   font-size: var(--fieldHintFontSize, inherit);
-  transition: top 0.2s cubic-bezier(0.9, -0.15, 0.1, 1.15),
-    opacity 0.2s ease-out, font-size 0.2s ease-out;
+  transition: top 0.2s cubic-bezier(0.9, -0.15, 0.1, 1.15), opacity 0.2s ease-out, font-size 0.2s ease-out;
 }
 .field__input:focus ~ .field__label-wrap .field__label,
 .field__input:not(:placeholder-shown) ~ .field__label-wrap .field__label {
