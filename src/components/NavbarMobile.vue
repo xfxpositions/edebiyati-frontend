@@ -1,25 +1,11 @@
 <template>
-  <div
-    class="flex justify-center items-center cursor-pointer p-2 box-border"
-    style="height: 72px"
-  >
-    <div
-      v-if="!avatar"
-      class="w-[32px] h-[32px] mr-5 relative bottom-5 right-5"
-    >
+  <div class="flex justify-center items-center cursor-pointer p-2 box-border" style="height: 72px">
+    <div v-if="!avatar" class="w-[32px] h-[32px] mr-5 relative bottom-5 right-5">
       <Loader></Loader>
     </div>
-    <Menu
-      v-if="avatar"
-      as="div"
-      class="transition-all duration-300 ease-in-out"
-    >
+    <Menu v-if="avatar" as="div" class="transition-all duration-300 ease-in-out">
       <MenuButton class="p-2">
-        <img
-          :src="avatar && avatar"
-          alt="me"
-          class="w-[40px] h-[40px] object-cover rounded-full"
-        />
+        <img :src="avatar && avatar" alt="me" class="w-[40px] h-[40px] object-cover rounded-full" />
       </MenuButton>
       <transition
         enter-active-class="transition duration-100 ease-out"
@@ -37,10 +23,7 @@
               to="/write"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <font-awesome-icon
-                :icon="['fas', 'pen-to-square']"
-                class="mr-1"
-              />
+              <font-awesome-icon :icon="['fas', 'pen-to-square']" class="mr-1" />
               <button class="group-hover:underline ml-1">Yaz</button>
             </router-link>
           </MenuItem>
@@ -83,10 +66,7 @@
               to="/logout"
               class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
             >
-              <font-awesome-icon
-                :icon="['fas', 'right-from-bracket']"
-                class="mr-1"
-              />
+              <font-awesome-icon :icon="['fas', 'right-from-bracket']" class="mr-1" />
               <button class="group-hover:underline">Çıkış Yap</button>
             </router-link>
           </MenuItem>
@@ -96,21 +76,16 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from "vue";
-import axiosUtil from "../utils/axios.js";
-import Loader from "../components/Loader.vue";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
+import { onMounted, ref } from 'vue'
+import axiosUtil from '../utils/axios.js'
+import Loader from '../components/Loader.vue'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
-const avatar = ref("");
+const avatar = ref('')
 onMounted(async () => {
-  await axiosUtil
-    .get(`/user/fetch/${localStorage.getItem("currentUser")}`)
-    .then((result) => {
-      avatar.value = result.data?.avatar;
-      avatar.value = avatar.value
-        ? avatar.value
-        : "https://upload.wikimedia.org/wikipedia/commons/1/16/K2-big.jpg";
-      console.log("avatar=>" + avatar.value);
-    });
-});
+  await axiosUtil.get(`/user/fetch/${localStorage.getItem('currentUser')}`).then(result => {
+    avatar.value = result.data?.avatar
+    avatar.value = avatar.value ? avatar.value : 'https://upload.wikimedia.org/wikipedia/commons/1/16/K2-big.jpg'
+  })
+})
 </script>

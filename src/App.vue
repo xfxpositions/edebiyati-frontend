@@ -12,16 +12,16 @@
   </div>
 </template>
 <script setup>
-import axios from "axios";
-import { onMounted, reactive, ref } from "vue";
-import Navbar from "./components/Navbar.vue";
-import NavbarMobile from "./components/NavbarMobile.vue";
-import BackGround from "./components/BackGround.vue";
+import axios from 'axios'
+import { onMounted, reactive, ref } from 'vue'
+import Navbar from './components/Navbar.vue'
+import NavbarMobile from './components/NavbarMobile.vue'
+import BackGround from './components/BackGround.vue'
 
-const emits = defineEmits(["myEvent"]);
-const token = localStorage.getItem("token");
-const user = reactive({ avatar: "" });
-onMounted(async () => {
+const emits = defineEmits(['myEvent'])
+const token = localStorage.getItem('token')
+const user = reactive({ avatar: '' })
+/*onMounted(async () => {
   const response = await axios.get(
     "http://localhost:8080/user/fetch/6432bf665d2b1fcf7bfbaba3"
   );
@@ -29,10 +29,10 @@ onMounted(async () => {
   user.avatar = response.data.avatar;
   console.log(userAvatar);
 });
-const margintop = (height) => {
-  document.getElementById("routerview").style.marginTop = height + "px";
-};
-const userAvatar = user.avatar;
+const userAvatar = user.avatar;*/
+const margintop = height => {
+  document.getElementById('routerview').style.marginTop = height + 'px'
+}
 </script>
 <style scoped>
 .routerview {

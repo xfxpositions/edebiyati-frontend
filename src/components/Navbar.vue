@@ -35,6 +35,7 @@ const navbar2 = ref(null)
 const isAuth = ref(false)
 onMounted(() => {
   isAuth.value = Boolean(localStorage.getItem('currentUser'))
+  console.log(localStorage.getItem('currentUser'))
 })
 onMounted(async () => {
   setTimeout(() => {
