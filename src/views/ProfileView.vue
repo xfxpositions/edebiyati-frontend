@@ -28,7 +28,7 @@
             </router-link>
           </div>
         </div>
-        <router-view class="router-view" v-slot="{ Component }">
+        <router-view class="router-view mt-2" v-slot="{ Component }">
           <component :is="Component" />
         </router-view>
       </div>
@@ -51,7 +51,7 @@ import axiosInstance from '../utils/axios.js'
 import { onBeforeMount, onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-const route = useRoute()
+const currentroute = useRoute()
 const routes = [
   {
     path: 'home',
@@ -76,11 +76,12 @@ onMounted(async () => {
     activetab.value.style.width = tabs.value.children[selectedIndex.value].offsetWidth + 'px'
     activetab.value.style.top = tabs.value.getBoundingClientRect().top + tabs.value.offsetHeight - 2 + 'px'
   })
-  if (route.fullPath == '/profile/home') {
-    selectedIndex.value = 0
-  } else if (route.fullPath == '/profile/about') {
-    selectedIndex.value = 1
-  }
+  routes.forEach((route, index) => {
+    const modifiedString = currentroute.fullPath.replace(/^\/profile\//, '')
+    if (modifiedString == route.path) {
+      selectedIndex.value = index
+    }
+  })
   setTimeout(() => {
     loading.value = false
   }, 300)

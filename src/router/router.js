@@ -10,6 +10,8 @@ import WriteView from '../views/WriteView.vue'
 import PostsViewTest from '../views/PostsViewTest.vue'
 import ProfileHome from '../views/ProfileViews/ProfileHome.vue'
 import ProfileAbout from '../views/ProfileViews/ProfileAbout.vue'
+import SettingsView from '../views/SettingsView.vue'
+import ProfileSettings from '../views/SettingsViews/ProfileSettings.vue'
 //import WriteTest from "../views/WriteTest.vue";
 const routes = [
   {
@@ -47,6 +49,32 @@ const routes = [
         name: 'ProfileAbout',
         path: 'about',
         component: ProfileAbout
+      }
+    ]
+  },
+  {
+    name: 'Settings',
+    path: '/settings',
+    component: SettingsView,
+    redirect: '/settings/account',
+    children: [
+      {
+        name: 'Account',
+        path: 'account',
+        component: ProfileSettings
+      }
+    ]
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: SettingsView,
+    redirect: '/settings/account',
+    children: [
+      {
+        name: 'Account',
+        path: 'account',
+        component: ProfileSettings
       }
     ]
   },
