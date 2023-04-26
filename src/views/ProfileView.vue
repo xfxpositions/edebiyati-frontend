@@ -4,8 +4,14 @@
       <div class="col-span-1 box"></div>
       <!--main section-->
       <div class="col-span-10 box" :class="{ hidden: loading == true }">
-        <div class="w-full py-20 text-4xl font-bold flex justify-between">
-          <div>{{ data.name }}</div>
+        <div class="w-full py-10 text-4xl font-bold flex justify-between">
+          <div class="w-full flex justify-start items-center">
+            <img class="object-cover object-center avatar lg:hidden" :src="data.avatar" alt="Main Image" />
+            <div class="ml-5 lg:ml-0 h-full flex flex-wrap items-center">
+              <div class="w-full">{{ data.name }}</div>
+              <div class="w-full lg:hidden text-lg text-gray-500">{{ data.email }}</div>
+            </div>
+          </div>
           <div class="cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 96 960 960" width="48">
               <path
@@ -28,7 +34,7 @@
       </div>
       <div class="col-span-10 box flex items-center justify-center" :class="{ hidden: loading == false }">Yükleniyor</div>
     </div>
-    <div class="lg:col-span-4 box py-5">
+    <div class="lg:col-span-4 lg:block box py-5 hidden">
       <div class="w-full"><img class="object-cover object-center avatar mt-10" :src="data.avatar" alt="Main Image" /></div>
       <div class="w-full font-bold pl-2 pt-5 text-xl">{{ data.name }}</div>
       <div class="w-full pl-2 text-base">{{ data.email }}</div>
@@ -65,6 +71,11 @@ const tabclick = event => {
   activetab.value.style.width = event.target.offsetWidth + 'px'
 }
 onMounted(async () => {
+  window.addEventListener('resize', () => {
+    activetab.value.style.left = tabs.value.children[selectedIndex.value].offsetLeft + 'px'
+    activetab.value.style.width = tabs.value.children[selectedIndex.value].offsetWidth + 'px'
+    activetab.value.style.top = tabs.value.getBoundingClientRect().top + tabs.value.offsetHeight - 2 + 'px'
+  })
   if (route.fullPath == '/profile/home') {
     selectedIndex.value = 0
   } else if (route.fullPath == '/profile/about') {
