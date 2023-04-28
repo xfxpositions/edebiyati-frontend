@@ -5,9 +5,10 @@ import router from './router/router'
 import VWave from 'v-wave'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
-
+library.add(far)
 library.add(fas)
 
 let app = createApp(App)
