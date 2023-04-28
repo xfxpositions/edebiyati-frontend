@@ -42,7 +42,6 @@ const usernameModal = () => {
 }
 const ppModal = () => {
   ppmodal.value = !ppmodal.value
-  console.log(ppmodal.value)
 }
 
 const changeEmail = email => {
