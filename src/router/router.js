@@ -12,6 +12,7 @@ import ProfileHome from '../views/ProfileViews/ProfileHome.vue'
 import ProfileAbout from '../views/ProfileViews/ProfileAbout.vue'
 import SettingsView from '../views/SettingsView.vue'
 import ProfileSettings from '../views/SettingsViews/ProfileSettings.vue'
+import SinglePost from '../views/SinglePost.vue'
 //import WriteTest from "../views/WriteTest.vue";
 const routes = [
   {
@@ -28,6 +29,12 @@ const routes = [
     name: 'Posts',
     path: '/posts',
     component: PostsView
+  },
+  {
+    name: 'SinglePost',
+    path: '/:title',
+    component: SinglePost,
+    props: route => ({ id: route.query.id })
   },
   {
     name: 'SignIn',
