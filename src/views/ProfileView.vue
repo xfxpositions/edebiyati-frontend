@@ -72,6 +72,7 @@ const tabclick = event => {
 }
 onMounted(async () => {
   window.addEventListener('resize', () => {
+    //getBoundingClientRect()
     activetab.value.style.left = tabs.value.children[selectedIndex.value].offsetLeft + 'px'
     activetab.value.style.width = tabs.value.children[selectedIndex.value].offsetWidth + 'px'
     activetab.value.style.top = tabs.value.getBoundingClientRect().top + tabs.value.offsetHeight - 2 + 'px'
