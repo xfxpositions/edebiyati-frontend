@@ -16,8 +16,7 @@
       <div class="w-full flex justify-center mb-5">
         <input class="input hidden" type="file" accept="image/*" ref="fileInput" @change="handleFileInput" />
         <div class="cursor-pointer w-32 h-8 rounded-lg" style="background-color: aqua">
-          <button class="w-full h-full items-center rounded-lg flex justify-center" v-wave @click="openFileBrowser">Avatarı Değiştir</button>
-          <button class="w-full h-full items-center rounded-lg flex justify-center" v-wave @click="openCanvasModal">Avatarı</button>
+          <button class="w-full h-full items-center rounded-lg flex justify-center" v-wave @click="openFileBrowser">Görseli Değiştir</button>
         </div>
       </div>
 
@@ -77,7 +76,7 @@ const openFileBrowser = () => {
 }
 const cropperOptions = reactive({
   aspectRatio: 1,
-  viewMode: 3,
+  viewMode: 2,
   responsive: true,
   restore: true,
   checkCrossOrigin: true,
