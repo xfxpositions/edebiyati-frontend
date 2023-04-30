@@ -99,4 +99,11 @@ onMounted(async () => {
     avatar.value = avatar.value ? avatar.value : 'https://upload.wikimedia.org/wikipedia/commons/1/16/K2-big.jpg'
   })
 })
+const navbar2 = ref(null)
+onMounted(async () => {
+  setTimeout(() => {
+    const height = navbar2.value.offsetHeight
+    localStorage.setItem('navbar', height)
+  }, 200)
+})
 </script>

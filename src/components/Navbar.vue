@@ -40,6 +40,7 @@ onMounted(() => {
 onMounted(async () => {
   setTimeout(() => {
     const height = navbar2.value.offsetHeight
+    localStorage.setItem('navbar', height)
     emits('marginTopFunction', height)
   }, 200)
 })
