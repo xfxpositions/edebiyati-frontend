@@ -9,6 +9,7 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { autoAnimatePlugin } from "@formkit/auto-animate/vue";
 import vue3GoogleLogin from "vue3-google-login";
+import Notifications from "notiwind";
 
 library.add(far);
 library.add(fas);
@@ -19,6 +20,8 @@ app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(router);
 app.use(VWave);
 app.use(autoAnimatePlugin);
+app.use(Notifications);
+
 app.use(vue3GoogleLogin, {
   clientId:
     "996476342171-ngk6soejcvscvj1a7mgtgshpqj4boejv.apps.googleusercontent.com",
