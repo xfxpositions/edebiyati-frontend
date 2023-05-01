@@ -30,7 +30,7 @@
 const routes = [
   {
     path: "account",
-    name: "Account",
+    name: "Bilgiler",
   },
 ];
 </script>
