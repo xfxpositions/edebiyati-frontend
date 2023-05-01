@@ -12,7 +12,7 @@
   </div>
 </template>
 <script setup>
-import axios from 'axios'
+import axiosUtil from './utils/axios.js'
 import { onMounted, reactive, ref } from 'vue'
 import Navbar from './components/Navbar.vue'
 import NavbarMobile from './components/NavbarMobile.vue'
@@ -21,15 +21,12 @@ import BackGround from './components/BackGround.vue'
 const emits = defineEmits(['myEvent'])
 const token = localStorage.getItem('token')
 const user = reactive({ avatar: '' })
-/*onMounted(async () => {
-  const response = await axios.get(
-    "http://localhost:8080/user/fetch/6432bf665d2b1fcf7bfbaba3"
-  );
-  console.log(response);
-  user.avatar = response.data.avatar;
-  console.log(userAvatar);
-});
-const userAvatar = user.avatar;*/
+onMounted(async () => {
+  await axiosUtil.get(`/user/fetch/${localStorage.getItem('currentUser')}`).then(result => {
+    localStorage.setItem('userName', result.data.name)
+    localStorage.setItem('userAvatar', result.data.avatar)
+  })
+})
 const margintop = height => {
   document.getElementById('routerview').style.marginTop = height + 'px'
 }

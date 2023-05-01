@@ -73,40 +73,65 @@
         </div>
       </div>
     </div>
-    <div class="hidden lg:grid sm:col-span-3 sidenav"></div>
+    <div class="hidden lg:grid sm:col-span-3 sidenav p-10">
+      <div class="w-full flex flex-wrap">
+        <div class="w-full rounded-lg">
+          <button class="w-full" @click="toggleComments">
+            <font-awesome-icon :icon="['far', 'comments']" />
+            Yorumlar
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="fixed top-0 left-0 bg-slate-900 h-full w-full overlay"
+      :style="[{ 'z-index': commentsOpen ? 0 : -1 }, { opacity: commentsOpen ? 0.3 : 0 }]"
+    ></div>
+    <Transition name="comment">
+      <div v-if="!commentsOpen" class="side-button flex justify-center items-center sm:hidden" @click="toggleComments">
+        <font-awesome-icon :icon="['fas', 'fa-arrow-left']" class="cursor-pointer" size="xl" @click="addFav" />
+      </div>
+    </Transition>
+    <Transition name="comment">
+      <Comments v-if="commentsOpen == true" @comment-close="toggleComments"></Comments>
+    </Transition>
   </div>
 </template>
 
 <script setup>
-import axiosUtil from "../utils/axios.js";
-import { useRouter, useRoute } from "vue-router";
-import { ref, onMounted, onBeforeUnmount } from "vue";
-const route = useRoute();
-const id = route.query.id;
-var data = ref(null);
-var user = ref("");
 
-const getuser = (userid) => {
-  console.log(userid);
-  axiosUtil.get("/user/fetch/" + userid).then((result) => {
-    user.value = result.data;
-  });
-};
+import Comments from './SinglePost/Comments.vue'
+import axiosUtil from '../utils/axios.js'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+const route = useRoute()
+const id = route.query.id
+var data = ref(null)
+var user = ref('')
+
+const getuser = userid => {
+  console.log(userid)
+  axiosUtil.get('/user/fetch/' + userid).then(result => {
+    user.value = result.data
+  })
+}
 
 const getarticle = () => {
-  axiosUtil.get("/post/fetch/" + id).then((result) => {
-    data.value = result.data;
-    let date = new Date(result.data.created_at * 1000);
-    let month = date.toLocaleString("tr-TR", { month: "long" });
-    let day = date.toLocaleString("tr-TR", { day: "numeric" });
-    let year = date.toLocaleString("tr-TR", { year: "numeric" });
-    let fulldate = day + " " + month + " " + year;
-    data.value.fulldate = fulldate;
-    getuser(result.data.author);
-  });
-};
-getarticle();
-const fav = ref(false);
+  axiosUtil.get('/post/fetch/' + id).then(result => {
+    data.value = result.data
+    let date = new Date(result.data.created_at * 1000)
+    let month = date.toLocaleString('tr-TR', { month: 'long' })
+    let day = date.toLocaleString('tr-TR', { day: 'numeric' })
+    let year = date.toLocaleString('tr-TR', { year: 'numeric' })
+    let fulldate = day + ' ' + month + ' ' + year
+    data.value.fulldate = fulldate
+    getuser(result.data.author)
+    console.log(result.data)
+  })
+}
+getarticle()
+const fav = ref(false)
+
 const addFav = () => {
   fav.value = !fav.value;
   console.log("fav");
@@ -129,11 +154,26 @@ onMounted(() => {
   window.addEventListener("scroll", updateProgressBarWidth);
 });
 onBeforeUnmount(() => {
+
   window.removeEventListener("scroll", updateProgressBarWidth);
 });
 </script>
 
 <style scoped>
+.side-button {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  position: fixed;
+  top: calc(100% - (45px));
+  right: 0;
+  z-index: 4;
+  background-color: rgb(196, 212, 227);
+  cursor: pointer;
+}
+.overlay {
+  transition: all 0.3s ease;
+}
 .reading-progress-bar {
   position: fixed;
   top: 72px;
@@ -173,5 +213,24 @@ onBeforeUnmount(() => {
 }
 .box3 {
   height: auto;
+}
+.comment-leave-active {
+  transition: 0.3s ease;
+  opacity: 1;
+}
+.comment-leave-to {
+  opacity: 0;
+  transform: translatex(200px);
+}
+.comment-enter-active {
+  transition: 0.3s ease;
+}
+.comment-enter-from {
+  transform: translatex(200px);
+  opacity: 0;
+}
+.comment-enter-to {
+  opacity: 1;
+  transform: translatex(0px);
 }
 </style>
