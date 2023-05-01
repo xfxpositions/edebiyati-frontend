@@ -14,6 +14,7 @@ import SettingsView from "../views/SettingsView.vue";
 import ProfileSettings from "../views/SettingsViews/ProfileSettings.vue";
 import SinglePost from "../views/SinglePost.vue";
 import google from "../views/GoogleView.vue";
+import favoritesView from "../views/FavoritesView.vue";
 //import WriteTest from "../views/WriteTest.vue";
 const routes = [
   {
@@ -44,9 +45,10 @@ const routes = [
   },
   {
     name: "Profile",
-    path: "/profile",
+    path: "/user/:name",
+    props: (route) => ({ id: route.query.id }),
     component: Profile,
-    redirect: "/profile/home",
+    redirect: "/user/:name/home",
     children: [
       {
         name: "ProfileHome",
@@ -110,6 +112,11 @@ const routes = [
     name: "Google",
     path: "/google",
     component: google,
+  },
+  {
+    name: "Favoriters",
+    path: "/favorites",
+    component: favoritesView,
   },
 ];
 const router = createRouter({
