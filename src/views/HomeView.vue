@@ -43,6 +43,7 @@
       </h2>
     </div>
   </div>
+  <Toast text="deneme" title="zibidi"></Toast>
   <Posts></Posts>
 </template>
 <script setup>
@@ -51,6 +52,7 @@ import { ref } from "vue";
 import SignInVue from "../components/SignIn.vue";
 import { modalstate } from "../modalState";
 import Posts from "../components/Posts.vue";
+import Toast from "../components/Toast.vue";
 const userLogged = localStorage.getItem("currentUser");
 </script>
 <style scoped>
