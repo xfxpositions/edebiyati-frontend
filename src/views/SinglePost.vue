@@ -1,59 +1,30 @@
 <template>
-  <div
-    class="container-fluid w-100 grid grid-cols-12 dark:bg-gray-900 bg-white dark:text-white"
-    style="padding-left: 120px"
-  >
+  <div class="container-fluid w-100 grid grid-cols-12 dark:bg-gray-900 bg-white dark:text-white px-10 lg:px-0">
     <div class="reading-progress-bar">
       <div class="progress-bar w-0" ref="progressbar"></div>
     </div>
-    <div class="lg:col-span-9 box3 grid grid-cols-12">
+    <div class="col-span-12 lg:col-span-9 box3 grid grid-cols-12">
       <div class="col-span-2 hidden lg:block"></div>
       <div class="col-span-12 lg:col-span-10">
         <div class="flex p-4 w-full justify-between">
           <div class="flex items-center">
-            <img
-              class="w-12 h-12 rounded-full mr-4"
-              :src="user.avatar"
-              alt="Author Photo"
-            />
+            <img class="w-12 h-12 rounded-full mr-4" :src="user.avatar" alt="Author Photo" />
             <div>
               <h2 class="text-lg font-semibold bg-white dark:text-white">
                 {{ user.name }}
               </h2>
-              <p
-                class="bg-white text-gray-500 dark:text-gray-300 justify-self-end w-full"
-              >
-                {{ data.fulldate }} . {{ data.read_time }} dakika
-              </p>
+              <p class="bg-white text-gray-500 dark:text-gray-300 justify-self-end w-full">{{ data.fulldate }} . {{ data.read_time }} dakika</p>
             </div>
           </div>
-          <div
-            class="h-full dark:text-slate-100 text-gray-900 font-bold text-lg"
-          >
+          <div class="h-full dark:text-slate-100 text-gray-900 font-bold text-lg">
             <div class="flex justify-end">
-              <font-awesome-icon
-                v-if="!fav"
-                :icon="['far', 'star']"
-                class="cursor-pointer"
-                @click="addFav"
-              />
-              <font-awesome-icon
-                v-else
-                :icon="['fas', 'star']"
-                class="cursor-pointer"
-                @click="addFav"
-              />
+              <font-awesome-icon v-if="!fav" :icon="['far', 'star']" class="cursor-pointer" @click="addFav" />
+              <font-awesome-icon v-else :icon="['fas', 'star']" class="cursor-pointer" @click="addFav" />
             </div>
           </div>
-          <div
-            class="h-full dark:text-slate-100 text-slate-100 font-bold text-xs hidden sm:block"
-          >
+          <div class="h-full dark:text-slate-100 text-slate-100 font-bold text-xs hidden sm:block">
             <div class="flex flex-wrap justify-end">
-              <div
-                v-for="(tag, index) in data.tags"
-                class="mr-2 mt-1"
-                style="height: fit-content; width: fit-content"
-              >
+              <div v-for="(tag, index) in data.tags" class="mr-2 mt-1" style="height: fit-content; width: fit-content">
                 <a href="#" target="_blank">
                   <div class="tag-box p-1 h-fit flex items-center">
                     {{ tag }}
@@ -88,7 +59,7 @@
       :style="[{ 'z-index': commentsOpen ? 0 : -1 }, { opacity: commentsOpen ? 0.3 : 0 }]"
     ></div>
     <Transition name="comment">
-      <div v-if="!commentsOpen" class="side-button flex justify-center items-center sm:hidden" @click="toggleComments">
+      <div v-if="!commentsOpen" class="side-button flex justify-center items-center lg:hidden" @click="toggleComments">
         <font-awesome-icon :icon="['fas', 'fa-arrow-left']" class="cursor-pointer" size="xl" @click="addFav" />
       </div>
     </Transition>
@@ -99,7 +70,6 @@
 </template>
 
 <script setup>
-
 import Comments from './SinglePost/Comments.vue'
 import axiosUtil from '../utils/axios.js'
 import { useRouter, useRoute } from 'vue-router'
@@ -131,32 +101,31 @@ const getarticle = () => {
 }
 getarticle()
 const fav = ref(false)
-
 const addFav = () => {
-  fav.value = !fav.value;
-  console.log("fav");
-  axiosUtil
-    .post(`/user/addbookmark/${user.value.avatar}`, { post_id: id })
-    .then((response) => {});
-};
-var progressbar = ref(null);
-var progressBarWidth = ref(null);
+  fav.value = !fav.value
+  console.log('fav')
+}
+var progressbar = ref(null)
+var progressBarWidth = ref(null)
 const updateProgressBarWidth = () => {
-  const windowHeight = window.innerHeight;
-  const pageHeight = document.documentElement.scrollHeight;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const scrollHeight = pageHeight - windowHeight;
-  const percentageScrolled = (scrollTop / scrollHeight) * 100;
-  progressBarWidth = percentageScrolled;
-  progressbar.value.style.width = progressBarWidth + "%";
-};
+  const windowHeight = window.innerHeight
+  const pageHeight = document.documentElement.scrollHeight
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+  const scrollHeight = pageHeight - windowHeight
+  const percentageScrolled = (scrollTop / scrollHeight) * 100
+  progressBarWidth = percentageScrolled
+  progressbar.value.style.width = progressBarWidth + '%'
+}
 onMounted(() => {
-  window.addEventListener("scroll", updateProgressBarWidth);
-});
+  window.addEventListener('scroll', updateProgressBarWidth)
+})
 onBeforeUnmount(() => {
-
-  window.removeEventListener("scroll", updateProgressBarWidth);
-});
+  window.removeEventListener('scroll', updateProgressBarWidth)
+})
+const commentsOpen = ref(false)
+const toggleComments = () => {
+  commentsOpen.value = !commentsOpen.value
+}
 </script>
 
 <style scoped>

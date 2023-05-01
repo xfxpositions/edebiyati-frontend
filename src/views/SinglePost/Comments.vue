@@ -1,7 +1,7 @@
 <template>
   <div class="fixed w-full overflow-auto top-0 left-0 grid grid-cols-12" :style="[{ height: containerheight }, { marginTop: marginTop }]">
-    <div class="h-full col-span-2 sm:col-span-8" @click="commentClose"></div>
-    <div class="h-full col-span-10 sm:col-span-4 dark:bg-gray-900 bg-gray-100 dark:text-white p-5 flex flex-wrap content-start">
+    <div class="h-full col-span-2 lg:col-span-9" @click="commentClose"></div>
+    <div class="h-full col-span-10 lg:col-span-3 dark:bg-gray-900 bg-gray-100 dark:text-white p-5 flex flex-wrap content-start">
       <div class="w-full text-2xl font-bold flex justify-between">
         <div>Yorumlar(1)</div>
         <div><font-awesome-icon :icon="['fas', 'xmark']" class="cursor-pointer" @click="commentClose" /></div>
