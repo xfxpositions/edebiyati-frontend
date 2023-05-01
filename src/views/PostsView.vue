@@ -14,10 +14,19 @@
       <div class="">
         <!-- top info -->
         <div class="flex gap-2 text-center backdrop-blur-[5px] dark:bg-gray-900 bg-white dark:text-white mb-3">
-          <img class="w-10 h-10 rounded-full" :src="post.authorAvatar" alt="Author Photo" />
-          <h2 class="text-lg font-bold flex items-center font-gentium cursor-pointer underline">
-            {{ post.authorName }}
-          </h2>
+          <router-link
+            :to="{
+              name: 'ProfileHome',
+              params: { username: post.author }
+            }"
+          >
+            <div class="flex w-full text-center items-center gap-2">
+              <img class="w-10 h-10 rounded-full" :src="post.authorAvatar" alt="Author Photo" />
+              <h2 class="text-lg font-bold flex items-center font-gentium cursor-pointer underline">
+                {{ post.authorName }}
+              </h2>
+            </div>
+          </router-link>
           <p class="flex items-center">.</p>
           <p class="text-sm text-slate-600 flex items-center">
             {{ post.fulldate }}
@@ -61,23 +70,24 @@ let posts = ref([])
 async function fetchPost(page) {
   axiosUtil.get('/post/fetchall/' + page).then(result => {
     if (result.data.length > 0) {
+      console.log(result.data)
       currentpage.value++
       result.data.forEach(element => {
         posts.value.push(element)
       })
       posts.value.forEach(async post => {
         ///write sayfasından gönderilen post olduğu zaman commentları kaldır
-        let date = new Date(post.created_at * 1000);
-        let month = date.toLocaleString("tr-TR", { month: "long" });
-        let day = date.toLocaleString("tr-TR", { day: "numeric" });
-        let year = date.toLocaleString("tr-TR", { year: "numeric" });
-        let fulldate = day + " " + month + " " + year;
-        post.fulldate = fulldate;
-        await axiosUtil.get("/user/fetch/" + post.author).then((response) => {
-          post.authorAvatar = response.data?.avatar;
-          post.authorName = response.data?.name;
-        });
-      });
+        let date = new Date(post.created_at * 1000)
+        let month = date.toLocaleString('tr-TR', { month: 'long' })
+        let day = date.toLocaleString('tr-TR', { day: 'numeric' })
+        let year = date.toLocaleString('tr-TR', { year: 'numeric' })
+        let fulldate = day + ' ' + month + ' ' + year
+        post.fulldate = fulldate
+        await axiosUtil.get('/user/fetch/' + post.author).then(response => {
+          post.authorAvatar = response.data?.avatar
+          post.authorName = response.data?.name
+        })
+      })
     }
   })
 }
