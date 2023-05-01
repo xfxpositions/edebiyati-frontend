@@ -67,17 +67,17 @@ async function fetchPost(page) {
       })
       posts.value.forEach(async post => {
         ///write sayfasından gönderilen post olduğu zaman commentları kaldır
-        let date = new Date(post.created_at * 1000)
-        let month = date.toLocaleString('tr-TR', { month: 'long' })
-        let day = date.toLocaleString('tr-TR', { day: 'numeric' })
-        let year = date.toLocaleString('tr-TR', { year: 'numeric' })
-        let fulldate = day + ' ' + month + ' ' + year
-        post.fulldate = fulldate
-        await axiosUtil.get('/user/fetch/' + post.author).then(response => {
-          post.authorAvatar = response.data?.avatar
-          post.authorName = response.data?.name
-        })
-      })
+        let date = new Date(post.created_at * 1000);
+        let month = date.toLocaleString("tr-TR", { month: "long" });
+        let day = date.toLocaleString("tr-TR", { day: "numeric" });
+        let year = date.toLocaleString("tr-TR", { year: "numeric" });
+        let fulldate = day + " " + month + " " + year;
+        post.fulldate = fulldate;
+        await axiosUtil.get("/user/fetch/" + post.author).then((response) => {
+          post.authorAvatar = response.data?.avatar;
+          post.authorName = response.data?.name;
+        });
+      });
     }
   })
 }
