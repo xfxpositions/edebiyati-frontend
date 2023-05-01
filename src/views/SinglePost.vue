@@ -8,11 +8,25 @@
       <div class="col-span-12 lg:col-span-10">
         <div class="flex p-4 w-full justify-between">
           <div class="flex items-center">
-            <img class="w-12 h-12 rounded-full mr-4" :src="user.avatar" alt="Author Photo" />
+            <router-link
+              :to="{
+                name: 'ProfileHome',
+                params: { username: data.author }
+              }"
+            >
+              <img class="w-12 h-12 rounded-full mr-4" :src="user.avatar" alt="Author Photo" />
+            </router-link>
             <div>
-              <h2 class="text-lg font-semibold bg-white dark:text-white">
-                {{ user.name }}
-              </h2>
+              <router-link
+                :to="{
+                  name: 'ProfileHome',
+                  params: { username: data.author }
+                }"
+              >
+                <h2 class="text-lg font-semibold bg-white dark:text-white">
+                  {{ user.name }}
+                </h2>
+              </router-link>
               <p class="bg-white text-gray-500 dark:text-gray-300 justify-self-end w-full">{{ data.fulldate }} . {{ data.read_time }} dakika</p>
             </div>
           </div>
@@ -60,7 +74,7 @@
     ></div>
     <Transition name="comment">
       <div v-if="!commentsOpen" class="side-button flex justify-center items-center lg:hidden" @click="toggleComments">
-        <font-awesome-icon :icon="['fas', 'fa-arrow-left']" class="cursor-pointer" size="xl" @click="addFav" />
+        <font-awesome-icon :icon="['far', 'comments']" class="cursor-pointer" size="xl" @click="addFav" />
       </div>
     </Transition>
     <Transition name="comment">

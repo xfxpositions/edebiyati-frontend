@@ -45,11 +45,25 @@ const routes = [
     component: SignIn
   },
   {
-    name: 'ProfileTwo',
-    path: '/:username',
-    component: ProfileTwo
+    name: 'Profile',
+    path: '/user/:username',
+    component: ProfileTwo,
+    props: route => ({ id: route.params.username }),
+    redirect: '/user/:username/home', // modify the redirect path
+    children: [
+      {
+        name: 'ProfileHome',
+        path: 'home',
+        component: ProfileHome
+      },
+      {
+        name: 'ProfileAbout',
+        path: 'about',
+        component: ProfileAbout
+      }
+    ]
   },
-  {
+  /* {
     name: 'Profile',
     path: '/user/:name',
     props: route => ({ id: route.query.id }),
@@ -67,7 +81,7 @@ const routes = [
         component: ProfileAbout
       }
     ]
-  },
+  },*/
   {
     name: 'Settings',
     path: '/settings',
