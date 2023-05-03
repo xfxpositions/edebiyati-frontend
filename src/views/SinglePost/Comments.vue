@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="cursor-pointer flex items-center gap-1" @click="togglecomment">
-                  <font-awesome-icon :icon="['far', 'comment']" size="lg" />
+                  <Vue3Lottie :animationData="commentJSON" :autoPlay="true" :height="30" :width="30" />
                   0
                 </div>
               </div>
@@ -82,7 +82,8 @@
 import { ref, onMounted, onBeforeUnmount, toRaw } from 'vue'
 import { Vue3Lottie } from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
-import heartJSON from './like.json'
+import heartJSON from './heart.json'
+import commentJSON from './comment.json'
 const isPlayingFirstPart = ref(true)
 const lottie = ref(null)
 function toggleAnimation() {
@@ -122,10 +123,7 @@ var like = ref(false)
 const togglelike = () => {
   like = !like
 }
-var dislike = ref(false)
-const togglecomment = () => {
-  dislike = !dislike
-}
+const togglecomment = () => {}
 </script>
 
 <style scoped>
