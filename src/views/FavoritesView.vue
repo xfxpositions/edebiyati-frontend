@@ -89,9 +89,9 @@
 <script setup>
 import "../../src/assets/learnmore.scss";
 import axiosUtil from "../utils/axios.js";
-import { onMounted, onBeforeUnmount, ref, watch } from "vue";
+import { onMounted, onBeforeUnmount, ref, watch, onBeforeMount } from "vue";
 let posts = ref([]);
-onMounted(() => {
+onBeforeMount(() => {
   console.log("hold on");
   axiosUtil
     .get(`/user/fetch/${localStorage.getItem("currentUser")}?fields=favorites`)
@@ -99,7 +99,14 @@ onMounted(() => {
       let postsResponse = response.data.favorites;
       for (const post_id of postsResponse) {
         axiosUtil.get(`/post/fetch/${post_id}`).then((response) => {
-          posts.value.push(response.data);
+          console.log("favorites");
+          console.log(response.data);
+          let a = response.data;
+          axiosUtil.get("/user/fetch/" + a.author).then((response) => {
+            a.authorName = response.data.name;
+            a.authorAvatar = response.data.avatar;
+            posts.value.push(a);
+          });
         });
       }
     })
