@@ -15,8 +15,16 @@
           </div>
         </div>
         <div class="w-full flex justify-end items-end gap-3">
-          <div class="cancel button flex items-center justify-center" @click="modal">İptal</div>
-          <div class="accept button flex items-center justify-center" @click="save">Kaydet</div>
+          <button v-wave class="cancel button flex items-center justify-center" @click="modal">İptal</button>
+          <button
+            v-wave="{
+              initialOpacity: 0.8
+            }"
+            class="accept button flex items-center justify-center"
+            @click="save"
+          >
+            Kaydet
+          </button>
         </div>
       </div>
     </div>

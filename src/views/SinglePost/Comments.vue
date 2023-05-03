@@ -1,5 +1,9 @@
 <template>
-  <div class="fixed w-full overflow-auto top-0 left-0 grid grid-cols-12" :style="[{ height: containerheight }, { marginTop: marginTop }]">
+  <div
+    class="fixed w-full overflow-auto top-0 left-0 grid grid-cols-12"
+    ref="container"
+    :style="[{ height: containerheight }, { marginTop: marginTop }]"
+  >
     <div class="h-full col-span-2 lg:col-span-9" @click="commentClose"></div>
     <div class="h-full col-span-10 lg:col-span-3 dark:bg-gray-900 bg-gray-100 dark:text-white p-5 flex flex-wrap content-start">
       <div class="w-full text-2xl font-bold flex justify-between">
@@ -10,7 +14,7 @@
       <div class="w-full mt-5 rounded-lg shadow-xl flex flex-wrap content-start border border-b-2 bg-white">
         <div class="flex p-4 w-full justify-between">
           <div class="flex items-center">
-            <img class="w-12 h-12 rounded-full mr-4" :src="avatar" alt="User Photo" />
+            <img class="w-12 h-12 rounded-full mr-3" :src="avatar" alt="User Photo" />
             <div>
               <h2 class="text-lg font-semibold">
                 {{ username }}
@@ -21,7 +25,7 @@
         <div class="w-full p-3 flex flex-wrap content-start">
           <textarea v-model="comment" class="w-full bg-inherit p-2 resize-none outline-none" placeholder="Düşüncelerini Yaz"></textarea>
           <div class="w-full flex justify-end">
-            <div class="accept button flex items-center justify-center" @click="save">Gönder</div>
+            <div v-wave="{ initialOpacity: 0.8 }" class="accept button flex items-center justify-center" @click="save">Gönder</div>
           </div>
         </div>
       </div>
@@ -30,24 +34,41 @@
         <div style="border-bottom: 1px solid #e2e2e2">
           <div class="flex p-4 w-full justify-between">
             <div class="flex items-center">
-              <img class="w-8 h-8 rounded-full mr-2" :src="avatar" alt="User Photo" />
-              <div>
-                <h2 class="text-lg font-semibold">
-                  {{ username }}
-                </h2>
-              </div>
+              <router-link
+                :to="{
+                  name: 'ProfileHome',
+                  params: { username: 'yazilim' }
+                }"
+              >
+                <div class="flex w-full text-center items-center">
+                  <img class="w-8 h-8 rounded-full mr-2" :src="avatar" alt="User Photo" />
+                  <div>
+                    <h2 class="text-lg font-semibold">
+                      {{ username }}
+                    </h2>
+                  </div>
+                </div>
+              </router-link>
             </div>
           </div>
           <div class="w-full p-3 flex flex-wrap content-start">
-            <div class="w-full bg-inherit p-2 resize-none outline-none">Yorum</div>
+            <div class="w-full bg-inherit p-2 resize-none outline-none">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima dolorum corporis placeat tempore sequi veniam harum iure, ullam alias
+              mollitia temporibus assumenda sunt consequuntur incidunt consequatur et vitae impedit minus!
+            </div>
+
             <div class="w-full pl-2 flex items-center justify-between gap-2">
               <div class="gap-2 flex">
-                <div>
-                  <font-awesome-icon :icon="['far', 'heart']" size="lg" />
+                <div class="cursor-pointer flex items-center" @click="position">
+                  <Vue3Lottie :loop="1" :animationData="heartJSON" :autoPlay="false" :height="30" :width="30" ref="lottie" @click="toggleAnimation" />
+
                   0
                 </div>
-                <font-awesome-icon :icon="['far', 'comment']" size="lg" />
-                0
+
+                <div class="cursor-pointer flex items-center gap-1" @click="togglecomment">
+                  <font-awesome-icon :icon="['far', 'comment']" size="lg" />
+                  0
+                </div>
               </div>
             </div>
           </div>
@@ -58,16 +79,53 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-const emits = defineEmits(['commentClose'])
-const commentClose = () => {
-  emits('commentClose')
+import { ref, onMounted, onBeforeUnmount, toRaw } from 'vue'
+import { Vue3Lottie } from 'vue3-lottie'
+import 'vue3-lottie/dist/style.css'
+import heartJSON from './like.json'
+const isPlayingFirstPart = ref(true)
+const lottie = ref(null)
+function toggleAnimation() {
+  if (isPlayingFirstPart.value) {
+    // Play the first part of the animation (frames 0-40)
+    lottie.value.playSegments([0, 40], true)
+  } else {
+    // Play the second part of the animation (frames 40-75)
+    lottie.value.playSegments([40, 75], true)
+  }
+
+  // Toggle the isPlayingFirstPart data property
+  isPlayingFirstPart.value = !isPlayingFirstPart.value
 }
+const props = defineProps({
+  scrollPos: Number
+})
+const emits = defineEmits(['commentClose'])
+var container = ref(null)
+var scrollPosition = ref(null)
+const commentClose = () => {
+  scrollPosition = container.value.scrollTop
+  emits('commentClose', scrollPosition)
+}
+onMounted(() => {
+  if (props.scrollPos != null) {
+    container.value.scrollTop = props.scrollPos
+  }
+})
 const comment = ref('')
 const avatar = ref(localStorage.getItem('userAvatar'))
 const username = ref(localStorage.getItem('userName'))
 const containerheight = 'calc(100vh - ' + localStorage.getItem('navbar') + 'px)'
 const marginTop = localStorage.getItem('navbar') + 'px'
+
+var like = ref(false)
+const togglelike = () => {
+  like = !like
+}
+var dislike = ref(false)
+const togglecomment = () => {
+  dislike = !dislike
+}
 </script>
 
 <style scoped>
