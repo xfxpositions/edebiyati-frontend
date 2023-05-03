@@ -62,6 +62,7 @@
   </div>
 </template>
 <script setup>
+import '../../src/assets/content.css'
 import '../../src/assets/learnmore.scss'
 import axiosUtil from '../utils/axios.js'
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
