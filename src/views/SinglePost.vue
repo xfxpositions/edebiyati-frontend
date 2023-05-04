@@ -78,7 +78,7 @@
       </div>
     </Transition>
     <Transition name="comment">
-      <Comments v-if="commentsOpen == true" :scrollPos="scroll" @comment-close="closeComments"></Comments>
+      <Comments v-if="commentsOpen == true" :comments="data.comments" :scrollPos="scroll" @comment-close="closeComments"></Comments>
     </Transition>
   </div>
 </template>
