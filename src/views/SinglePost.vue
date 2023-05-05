@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid w-100 grid grid-cols-12 dark:bg-gray-900 bg-white dark:text-white px-10 lg:px-0">
+  <div class="container-fluid w-100 grid grid-cols-12 dark:bg-gray-900 bg-white dark:text-white px-7 lg:px-0">
     <div class="reading-progress-bar">
       <div class="progress-bar w-0" ref="progressbar"></div>
     </div>
@@ -50,7 +50,7 @@
         </div>
         <div class="font-bold font-gentium text-4xl p-5">{{ data.title }}</div>
         <div class="p-5 flex max-w-[2000px] max-h-[2000px] justify-center items-center">
-          <img class="md:w-[60%] h-3/6 object-cover rounded-md" :src="data.image" />
+          <img class="w-full h-3/6 object-contain object-center rounded-md" :src="data.image" />
         </div>
 
         <div class="content">
@@ -74,7 +74,7 @@
     ></div>
     <Transition name="comment">
       <div v-if="!commentsOpen" class="side-button flex justify-center items-center lg:hidden" @click="openComments">
-        <font-awesome-icon :icon="['far', 'comments']" class="cursor-pointer" size="xl" @click="addFav" />
+        <font-awesome-icon :icon="['far', 'comments']" class="cursor-pointer" size="xl" />
       </div>
     </Transition>
     <Transition name="comment">

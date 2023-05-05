@@ -19,7 +19,7 @@
         <TagSearch @on-tag-select="onTagSelect"></TagSearch>
       </div>
     </div>
-    <button class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right fixed-button" @click="qlUpload">
+    <button v-wave class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right fixed-button" @click="toggleWarn">
       Gönder
     </button>
     <!--Sidenav-->
@@ -62,6 +62,9 @@
       </div>
     </div>
   </NotificationGroup>
+  <Transition name="transition">
+    <MyModal v-if="showWarn" @modal-close="toggleWarn" @SavePost="qlUpload" @tag-close="toggleWarn"></MyModal>
+  </Transition>
 </template>
 <script setup>
 import { ref } from 'vue'
@@ -73,7 +76,12 @@ import turndown from 'turndown'
 import axiosUtil from '../utils/axios.js'
 import TagSearch from '../components/TagSearch.vue'
 import ImageUpload from '../components/ImageUpload.vue'
+import MyModal from './Modals/MyModal.vue'
 import { notify } from 'notiwind'
+const showWarn = ref(false)
+const toggleWarn = () => {
+  showWarn.value = !showWarn.value
+}
 const marginTop = localStorage.getItem('navbar') + 'px'
 const showNotification = () => {
   notify(
@@ -154,6 +162,7 @@ const qlUpload = () => {
         .then(response => {
           console.log('Post was successful:', response)
           showNotification()
+          toggleWarn()
         })
         .catch(error => {
           console.error('There was an error:', error)
@@ -170,7 +179,7 @@ const qlUpload = () => {
   position: fixed;
   bottom: 10px;
   right: 10px;
-  z-index: 10;
+  z-index: 0;
 }
 .sidenav-container {
   position: fixed;
@@ -261,5 +270,14 @@ const qlUpload = () => {
 }
 .text-area-box {
   background-color: rgb(24, 24, 24);
+}
+.transition-enter-active,
+.transition-leave-active {
+  transition: 0.5s ease;
+}
+.transition-enter-from,
+.transition-leave-to {
+  opacity: 0;
+  transform: translatey(100px);
 }
 </style>
