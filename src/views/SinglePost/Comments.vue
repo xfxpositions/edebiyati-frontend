@@ -31,43 +31,52 @@
       </div>
       <!--Comments-->
       <div class="w-full mt-5 rounded-lg shadow-xl content-start border border-b-2 bg-white">
-        <div style="border-bottom: 1px solid #e2e2e2">
-          <div class="flex p-4 w-full justify-between">
-            <div class="flex items-center">
-              <router-link
-                :to="{
-                  name: 'ProfileHome',
-                  params: { username: 'yazilim' }
-                }"
-              >
-                <div class="flex w-full text-center items-center">
-                  <img class="w-8 h-8 rounded-full mr-2" :src="avatar" alt="User Photo" />
-                  <div>
-                    <h2 class="text-lg font-semibold">
-                      {{ username }}
-                    </h2>
+        <div v-for="(comment, index) in comments">
+          <div style="border-bottom: 1px solid #e2e2e2">
+            <div class="flex p-4 w-full justify-between">
+              <div class="flex items-center">
+                <router-link
+                  :to="{
+                    name: 'ProfileHome',
+                    params: { username: 'yazilim' }
+                  }"
+                >
+                  <div class="flex w-full text-center items-center">
+                    <img class="w-8 h-8 rounded-full mr-2" :src="avatar" alt="User Photo" />
+                    <div>
+                      <h2 class="text-lg font-semibold">
+                        {{ username }}
+                      </h2>
+                    </div>
                   </div>
-                </div>
-              </router-link>
+                </router-link>
+              </div>
             </div>
-          </div>
-          <div class="w-full p-3 flex flex-wrap content-start">
-            <div class="w-full bg-inherit p-2 resize-none outline-none">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima dolorum corporis placeat tempore sequi veniam harum iure, ullam alias
-              mollitia temporibus assumenda sunt consequuntur incidunt consequatur et vitae impedit minus!
-            </div>
+            <div class="w-full p-3 flex flex-wrap content-start">
+              <div class="w-full bg-inherit p-2 resize-none outline-none">
+                {{ comment.content }}
+              </div>
 
-            <div class="w-full pl-2 flex items-center justify-between gap-2">
-              <div class="gap-2 flex">
-                <div class="cursor-pointer flex items-center" @click="position">
-                  <Vue3Lottie :loop="1" :animationData="heartJSON" :autoPlay="false" :height="30" :width="30" ref="lottie" @click="toggleAnimation" />
+              <div class="w-full pl-2 flex items-center justify-between gap-2">
+                <div class="gap-2 flex">
+                  <div class="cursor-pointer flex items-center" @click="position">
+                    <Vue3Lottie
+                      :loop="1"
+                      :animationData="heartJSON"
+                      :autoPlay="false"
+                      :height="30"
+                      :width="30"
+                      ref="lottie"
+                      @click="toggleAnimation(index)"
+                    />
 
-                  0
-                </div>
+                    0
+                  </div>
 
-                <div class="cursor-pointer flex items-center gap-1" @click="togglecomment">
-                  <font-awesome-icon :icon="['far', 'comment']" size="lg" />
-                  0
+                  <div class="cursor-pointer flex items-center gap-1" @click="togglecomment">
+                    <Vue3Lottie :animationData="commentJSON" :autoPlay="true" :height="30" :width="30" />
+                    0
+                  </div>
                 </div>
               </div>
             </div>
@@ -82,24 +91,28 @@
 import { ref, onMounted, onBeforeUnmount, toRaw } from 'vue'
 import { Vue3Lottie } from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
-import heartJSON from './like.json'
-const isPlayingFirstPart = ref(true)
+import heartJSON from './heart.json'
+import commentJSON from './comment.json'
+const isPlayingFirstPart = ref([])
 const lottie = ref(null)
-function toggleAnimation() {
-  if (isPlayingFirstPart.value) {
+function toggleAnimation(index) {
+  if (isPlayingFirstPart.value[index]) {
     // Play the first part of the animation (frames 0-40)
-    lottie.value.playSegments([0, 40], true)
+    lottie.value[index].playSegments([0, 40], true)
   } else {
     // Play the second part of the animation (frames 40-75)
-    lottie.value.playSegments([40, 75], true)
+    lottie.value[index].playSegments([40, 75], true)
   }
 
   // Toggle the isPlayingFirstPart data property
-  isPlayingFirstPart.value = !isPlayingFirstPart.value
+  isPlayingFirstPart.value[index] = !isPlayingFirstPart.value[index]
 }
 const props = defineProps({
-  scrollPos: Number
+  scrollPos: Number,
+  comments: Array
 })
+const deneme = [{ content: 'deneme' }, { content: 'deneme2' }]
+const comments = ref(props.comments)
 const emits = defineEmits(['commentClose'])
 var container = ref(null)
 var scrollPosition = ref(null)
@@ -108,6 +121,10 @@ const commentClose = () => {
   emits('commentClose', scrollPosition)
 }
 onMounted(() => {
+  lottie.value.forEach(element => {
+    isPlayingFirstPart.value.push(true)
+    console.log(isPlayingFirstPart.value)
+  })
   if (props.scrollPos != null) {
     container.value.scrollTop = props.scrollPos
   }
@@ -122,10 +139,7 @@ var like = ref(false)
 const togglelike = () => {
   like = !like
 }
-var dislike = ref(false)
-const togglecomment = () => {
-  dislike = !dislike
-}
+const togglecomment = () => {}
 </script>
 
 <style scoped>
