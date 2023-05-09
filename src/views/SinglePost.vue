@@ -126,7 +126,8 @@
     </Transition>
     <Transition name="comment">
       <Comments
-        :comment-data="data.comments"
+        :comments="data.comments"
+        :post-id="id"
         v-if="commentsOpen == true"
         :scrollPos="scroll"
         @comment-close="closeComments"
