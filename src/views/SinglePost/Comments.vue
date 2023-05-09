@@ -42,6 +42,7 @@
             class="w-full bg-inherit p-2 resize-none outline-none"
             placeholder="Düşüncelerini Yaz"
           ></textarea>
+
           <div class="w-full flex justify-end">
             <div
               v-wave="{ initialOpacity: 0.8 }"
@@ -181,10 +182,13 @@ const isLiked = (likes) => {
 };
 onBeforeMount(() => {});
 onMounted(() => {
-  lottie.value.forEach((element) => {
-    isPlayingFirstPart.value.push(true);
-    console.log(isPlayingFirstPart.value);
-  });
+  if (lottie.value) {
+    lottie.value.forEach((element) => {
+      isPlayingFirstPart.value.push(true);
+      console.log(isPlayingFirstPart.value);
+    });
+  }
+
   if (props.scrollPos != null) {
     container.value.scrollTop = props.scrollPos;
   }
@@ -212,6 +216,25 @@ const togglelike = (comment_id) => {
     });
 };
 const togglecomment = () => {};
+const commentSending = ref(false);
+const save = () => {
+  console.log(comment.value);
+  if (comment.value.length > 0) {
+    commentSending.value = true;
+    const commentData = {
+      author_id: localStorage.getItem("currentUser"),
+      content: comment.value,
+    };
+    axiosUtil
+      .post(`/post/addcomment/${props.postId}`, commentData)
+      .then((response) => {
+        console.log(response);
+        comment.value = "";
+        commentSending.value = false;
+        //commentClose();
+      });
+  }
+};
 </script>
 
 <style scoped>

@@ -8,16 +8,23 @@
           <div class="w-full flex justify-start items-center">
             <img
               class="object-cover object-center avatar lg:hidden"
-              src="https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_star-forming_region_carina_nircam_final-5mb.jpg"
+              :src="userData.avatar"
               alt="Main Image"
             />
             <div class="ml-5 lg:ml-0 h-full flex flex-wrap items-center">
-              <div class="w-full">Yazılım</div>
-              <div class="w-full lg:hidden text-lg text-gray-500">yazilimpanteri@gmail.com</div>
+              <div class="w-full">{{ userData.name }}</div>
+              <div class="w-full lg:hidden text-lg text-gray-500">
+                {{ userData.email }}
+              </div>
             </div>
           </div>
           <div class="cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 96 960 960" width="48">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="48"
+              viewBox="0 96 960 960"
+              width="48"
+            >
               <path
                 d="M207.858 624Q188 624 174 609.858q-14-14.141-14-34Q160 556 174.142 542q14.141-14 34-14Q228 528 242 542.142q14 14.141 14 34Q256 596 241.858 610q-14.141 14-34 14Zm272 0Q460 624 446 609.858q-14-14.141-14-34Q432 556 446.142 542q14.141-14 34-14Q500 528 514 542.142q14 14.141 14 34Q528 596 513.858 610q-14.141 14-34 14Zm272 0Q732 624 718 609.858q-14-14.141-14-34Q704 556 718.142 542q14.141-14 34-14Q772 528 786 542.142q14 14.141 14 34Q800 596 785.858 610q-14.141 14-34 14Z"
               />
@@ -25,9 +32,17 @@
           </div>
         </div>
         <div class="activetab" ref="activetab"></div>
-        <div class="flex justify-start items-center w-full gap-3 border-b-2 border-gray-200" ref="tabs">
+        <div
+          class="flex justify-start items-center w-full gap-3 border-b-2 border-gray-200"
+          ref="tabs"
+        >
           <div v-for="(route, index) in routes">
-            <router-link :class="{ active: selectedIndex == index }" :to="route.title" ref="home" @click="tabclick">
+            <router-link
+              :class="{ active: selectedIndex == index }"
+              :to="route.title"
+              ref="home"
+              @click="tabclick"
+            >
               {{ route.title }}
             </router-link>
           </div>
@@ -36,20 +51,25 @@
           <component :is="Component" />
         </router-view>
       </div>
-      <div class="col-span-10 box flex items-center justify-center" :class="{ hidden: loading == false }">Yükleniyor</div>
+      <div
+        class="col-span-10 box flex items-center justify-center"
+        :class="{ hidden: loading == false }"
+      >
+        Yükleniyor
+      </div>
     </div>
     <div class="lg:col-span-4 lg:block box py-5 hidden">
       <div class="w-full">
         <img
           class="object-cover object-center avatar mt-10"
-          src="https://www.nasa.gov/sites/default/files/styles/full_width_feature/public/thumbnails/image/main_image_star-forming_region_carina_nircam_final-5mb.jpg"
+          :src="userData.avatar"
           alt="Main Image"
         />
       </div>
-      <div class="w-full font-bold pl-2 pt-5 text-xl">Yazılım</div>
-      <div class="w-full pl-2 text-base">yazilimpanteri@gmail.com</div>
+      <div class="w-full font-bold pl-2 pt-5 text-xl">{{ userData.name }}</div>
+      <div class="w-full pl-2 text-base">{{ userData.email }}</div>
       <div class="w-full pl-2 mt-5 text-base cursor-pointer text-emerald-500">
-        Edit Profile
+        Profili Güncelle
         <font-awesome-icon :icon="['fas', 'pen-to-square']" />
       </div>
     </div>
@@ -57,54 +77,86 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, onBeforeUnmount, ref, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-const currentroute = useRoute()
+import { onBeforeMount, onMounted, onBeforeUnmount, ref, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import axiosUtil from "../utils/axios.js";
+import axios from "axios";
+import router from "../router/router";
+
+const currentroute = useRoute();
 const routes = [
   {
-    path: 'home',
-    title: 'Home'
+    path: "home",
+    title: "Home",
   },
   {
-    path: 'about',
-    title: 'About'
-  }
-]
-var loading = ref(true)
-var selectedIndex = ref(0)
-var tabs = ref(null)
-var activetab = ref(null)
-const tabclick = event => {
-  activetab.value.style.left = event.target.offsetLeft + 'px'
-  activetab.value.style.width = event.target.offsetWidth + 'px'
-}
+    path: "about",
+    title: "About",
+  },
+];
+var loading = ref(true);
+var selectedIndex = ref(0);
+var tabs = ref(null);
+var activetab = ref(null);
+const tabclick = (event) => {
+  activetab.value.style.left = event.target.offsetLeft + "px";
+  activetab.value.style.width = event.target.offsetWidth + "px";
+};
+const userData = ref({});
 onMounted(async () => {
-  window.addEventListener('resize', () => {
+  axiosUtil
+    .get(`/user/getbyname/${username}`)
+    .then((response) => {
+      if (response.status == 404) {
+        router.push("/404");
+      } else {
+        userData.value = response.data;
+        console.log(userData.value);
+      }
+    })
+    .catch((error) => {
+      if (error.response.status == 404) {
+        router.push("/404");
+      }
+    });
+  window.addEventListener("resize", () => {
     //getBoundingClientRect()
-    activetab.value.style.left = tabs.value.children[selectedIndex.value].offsetLeft + 'px'
-    activetab.value.style.width = tabs.value.children[selectedIndex.value].offsetWidth + 'px'
-    activetab.value.style.top = tabs.value.getBoundingClientRect().top + tabs.value.offsetHeight - 2 + 'px'
-  })
+    activetab.value.style.left =
+      tabs.value.children[selectedIndex.value].offsetLeft + "px";
+    activetab.value.style.width =
+      tabs.value.children[selectedIndex.value].offsetWidth + "px";
+    activetab.value.style.top =
+      tabs.value.getBoundingClientRect().top +
+      tabs.value.offsetHeight -
+      2 +
+      "px";
+  });
   routes.forEach((route, index) => {
-    const modifiedString = currentroute.fullPath.replace(/^\/profile\//, '')
+    const modifiedString = currentroute.fullPath.replace(/^\/profile\//, "");
     if (modifiedString == route.path) {
-      selectedIndex.value = index
+      selectedIndex.value = index;
     }
-  })
+  });
   setTimeout(() => {
-    loading.value = false
-  }, 300)
+    loading.value = false;
+  }, 300);
   setTimeout(() => {
-    activetab.value.style.left = tabs.value.children[selectedIndex.value].offsetLeft + 'px'
-    activetab.value.style.width = tabs.value.children[selectedIndex.value].offsetWidth + 'px'
-    activetab.value.style.top = tabs.value.getBoundingClientRect().top + tabs.value.offsetHeight - 2 + 'px'
-  }, 300)
-})
-const route = useRoute()
-const username = route.params.username
+    activetab.value.style.left =
+      tabs.value.children[selectedIndex.value].offsetLeft + "px";
+    activetab.value.style.width =
+      tabs.value.children[selectedIndex.value].offsetWidth + "px";
+    activetab.value.style.top =
+      tabs.value.getBoundingClientRect().top +
+      tabs.value.offsetHeight -
+      2 +
+      "px";
+  }, 300);
+});
+const route = useRoute();
+const username = route.params.username;
 onMounted(() => {
-  console.log(username)
-})
+  console.log(username);
+});
 </script>
 
 <style scoped>
