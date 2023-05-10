@@ -104,7 +104,7 @@
                       ref="lottie"
                       @click="
                         toggleAnimation(index);
-                        togglelike(comment.id);
+                        togglelike(comment.id, index);
                       "
                     />
 
@@ -158,7 +158,6 @@ function toggleAnimation(index) {
     // Play the second part of the animation (frames 40-75)
     lottie.value[index].playSegments([40, 75], true);
   }
-
   // Toggle the isPlayingFirstPart data property
   isPlayingFirstPart.value[index] = !isPlayingFirstPart.value[index];
 }
@@ -181,11 +180,19 @@ const isLiked = (likes) => {
   return likes.includes(localStorage.getItem("currentUser"));
 };
 onBeforeMount(() => {});
+
 onMounted(() => {
   if (lottie.value) {
-    lottie.value.forEach((element) => {
-      isPlayingFirstPart.value.push(true);
+    var index = 0;
+    lottie.value.forEach((element, index) => {
+      comments.value[index].likedByUser = isLiked(comments.value[index].likes);
+      if (comments.value[index].likedByUser) {
+        isPlayingFirstPart.value.push(false);
+      } else {
+        isPlayingFirstPart.value.push(true);
+      }
       console.log(isPlayingFirstPart.value);
+      index++;
     });
   }
 
@@ -203,7 +210,7 @@ const containerheight =
 const marginTop = localStorage.getItem("navbar") + "px";
 
 var like = ref(false);
-const togglelike = (comment_id) => {
+const togglelike = (comment_id, comment_index) => {
   axiosUtil
     .post(
       `/post/add_like/${
@@ -211,6 +218,7 @@ const togglelike = (comment_id) => {
       }?comment_id=${comment_id}&user_id=${localStorage.getItem("currentUser")}`
     )
     .then((response) => {
+      comments.value[comment_index].likes.push("userLiked");
       console.log(response);
       like.value = !like.value;
     });

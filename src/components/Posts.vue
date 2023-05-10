@@ -23,7 +23,7 @@
             <router-link
               :to="{
                 name: 'ProfileHome',
-                params: { username: post.author },
+                params: { username: post.authorName ? post.authorName : 'qwe' },
               }"
             >
               <div class="flex w-full text-center items-center gap-2">

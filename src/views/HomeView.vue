@@ -39,11 +39,11 @@
       <h2
         class="mb-4 text-xl font-bold tracking-tight text-gray-900 lg:text-2xl lg:leading-none dark:text-white lg:mb-7"
       >
-        İşte sizin için seçtiğimiz makalaler
+        İşte sizin için seçtiğimiz yazılar
       </h2>
     </div>
   </div>
-  <Toast text="deneme" title="zibidi"></Toast>
+  <!-- <Toast text="deneme" title="zibidi"></Toast> -->
   <Posts></Posts>
 </template>
 <script setup>
