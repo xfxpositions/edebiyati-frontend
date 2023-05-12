@@ -34,12 +34,12 @@
       <h1
         class="mb-4 text-4xl font-bold font-gentium tracking-tight text-gray-900 lg:font-extrabold lg:text-4xl lg:leading-none dark:text-white lg:mb-7"
       >
-        Bitigin.org'a tekrardan hoşgeldiniz!
+        <Section delay="300"> Bitigin.org'a tekrardan hoşgeldiniz! </Section>
       </h1>
       <h2
         class="mb-4 text-xl font-bold tracking-tight text-gray-900 lg:text-2xl lg:leading-none dark:text-white lg:mb-7"
       >
-        İşte sizin için seçtiğimiz yazılar
+        <Section delay="1000"> İşte sizin için seçtiğimiz yazılar </Section>
       </h2>
     </div>
   </div>
@@ -54,6 +54,7 @@ import { modalstate } from "../modalState";
 import Posts from "../components/Posts.vue";
 import Toast from "../components/Toast.vue";
 const userLogged = localStorage.getItem("currentUser");
+import Section from "../components/Section.vue";
 </script>
 <style scoped>
 .modal-enter-active,

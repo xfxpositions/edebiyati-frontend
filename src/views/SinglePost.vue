@@ -43,19 +43,25 @@
           <div
             class="h-full dark:text-slate-100 text-gray-900 font-bold text-lg"
           >
-            <div class="flex justify-end">
-              <font-awesome-icon
-                v-if="!fav"
-                :icon="['far', 'star']"
-                class="cursor-pointer"
+            <div class="flex justify-center items-center">
+              <!-- 
+              /> -->
+
+              <Vue3Lottie
+                v-if="fav"
+                :loop="false"
+                :animationData="favoriteJSON"
+                :autoPlay="true"
+                :height="20"
+                :width="20"
                 @click="addFav"
               />
               <font-awesome-icon
                 v-else
-                :icon="['fas', 'star']"
+                :icon="['far', 'star']"
                 class="cursor-pointer"
                 @click="addFav"
-              />
+              ></font-awesome-icon>
             </div>
           </div>
           <div
@@ -126,7 +132,7 @@
     </Transition>
     <Transition name="comment">
       <Comments
-        :comments="data.comments"
+        :comment-data="data.comments"
         :post-id="id"
         v-if="commentsOpen == true"
         :scrollPos="scroll"
@@ -141,6 +147,9 @@ import Comments from "./SinglePost/Comments.vue";
 import axiosUtil from "../utils/axios.js";
 import { useRouter, useRoute } from "vue-router";
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import favoriteJSON from "../assets/favorite.json";
+import { Vue3Lottie } from "vue3-lottie";
+
 const route = useRoute();
 const id = route.query.id;
 var data = ref(null);

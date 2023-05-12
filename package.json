@@ -19,6 +19,7 @@
     "@headlessui/vue": "^1.7.13",
     "@iconscout/vue-unicons": "^1.0.2",
     "@vueup/vue-quill": "^1.1.1",
+    "@vueuse/motion": "^2.0.0-beta.12",
     "axios": "^1.3.5",
     "buffer": "^6.0.3",
     "cropperjs": "2.0.0-alpha.2",
