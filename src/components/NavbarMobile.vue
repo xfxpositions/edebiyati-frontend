@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center items-center cursor-pointer p-2 box-border"
+    class="flex justify-center items-center cursor-pointer p-2 box-border z-20"
     style="height: 72px"
   >
     <div

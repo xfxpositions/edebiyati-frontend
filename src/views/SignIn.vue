@@ -7,8 +7,12 @@
       <div
         class="w-full shadow-lg bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700 bg-[url('https://media.timeout.com/images/105702184/1024/768/image.jpg')] bg-cover bg-no-repeat"
       >
-        <div class="p-6 space-y-4 md:space-y-6 sm:p-8 transition-all 1s ease-in-out backdrop-blur-[3px]">
-          <h1 class="text-4xl text-center font-gentium font-bold leading-tight tracking-tight text-gray-900 dark:text-white">
+        <div
+          class="p-6 space-y-4 md:space-y-6 sm:p-8 transition-all 1s ease-in-out backdrop-blur-[3px]"
+        >
+          <h1
+            class="text-4xl text-center font-gentium font-bold leading-tight tracking-tight text-gray-900 dark:text-white"
+          >
             Tekrardan Hoşgeldiniz!
           </h1>
           <hr />
@@ -17,13 +21,20 @@
             <div
               class="bg-slate-50 bg-opacity-90 backdrop-blur-[10px] hover:bg-opacity-75 transition-all duration-200 ease-in-out cursor-pointer select-none border rounded-full inline-flex items-center px-5 py-2"
             >
-              <img class="w-[20px] h-[20px] mr-2" src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" />
+              <img
+                class="w-[20px] h-[20px] mr-2"
+                src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg"
+              />
               <h2 class="text-sm font-medium">Github ile giriş yap.</h2>
             </div>
           </div>
           <form class="space-y-4 md:space-y-6" action="#">
             <div>
-              <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">E-Posta Adresiniz</label>
+              <label
+                for="email"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >E-Posta Adresiniz</label
+              >
               <input
                 type="email"
                 name="email"
@@ -35,7 +46,11 @@
               />
             </div>
             <div>
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Şifreniz</label>
+              <label
+                for="password"
+                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Şifreniz</label
+              >
 
               <input
                 v-model="password"
@@ -59,10 +74,18 @@
                   />
                 </div>
                 <div class="ml-3 text-sm select-none">
-                  <label for="remember" class="text-gray-900 select-none dark:text-gray-300">Beni Hatırla</label>
+                  <label
+                    for="remember"
+                    class="text-gray-900 select-none dark:text-gray-300"
+                    >Beni Hatırla</label
+                  >
                 </div>
               </div>
-              <a href="#" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Şifreniz mi kayıp?</a>
+              <a
+                href="#"
+                class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500"
+                >Şifreniz mi kayıp?</a
+              >
             </div>
             <button
               type="submit"
@@ -73,7 +96,11 @@
             </button>
             <p class="text-sm font-light text-gray-200 dark:text-gray-400"></p>
             <p class="font-semibold">Ya da...</p>
-            <a href="#" class="font-bold underline hover:underline dark:text-primary-500">Hesap Oluştur!</a>
+            <a
+              href="#"
+              class="font-bold underline hover:underline dark:text-primary-500"
+              >Hesap Oluştur!</a
+            >
           </form>
         </div>
       </div>
@@ -81,63 +108,67 @@
   </section>
 </template>
 <script setup>
-import axios from '../utils/axios.js'
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import jwt_decode from 'jwt-decode'
-import GoogleAuth from '../components/GoogleAuth.vue'
+import axios from "../utils/axios.js";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
+import jwt_decode from "jwt-decode";
+import GoogleAuth from "../components/GoogleAuth.vue";
 
-const router = useRouter()
-const email = ref('')
-const password = ref('')
+const router = useRouter();
+const email = ref("");
+const password = ref("");
 
 onMounted(() => {
   //if(localStorage.getItem("token")){
   //router.push({ path: "/profile" });
   //}
-})
-let userData = {}
-const handleGoogle = code => {
+});
+let userData = {};
+const handleGoogle = (code) => {
   axios
-    .post('/user/logingoogle', { code: code })
-    .then(response => {
-      console.log(response)
-      let user = jwt_decode(response.data?.token)
-      let currentUser = user?.sub
+    .post("/user/logingoogle", { code: code })
+    .then((response) => {
+      console.log(response);
+      let user = jwt_decode(response.data?.token);
+      let currentUser = user?.sub;
 
-      localStorage.setItem('token', response?.data?.token)
-      localStorage.setItem('currentUser', currentUser)
-      localStorage.setItem('isAuth', true)
+      localStorage.setItem("token", response?.data?.token);
+      localStorage.setItem("currentUser", currentUser);
+      localStorage.setItem("isAuth", true);
 
-      router.push('/').then(() => {
-        location.reload()
-      })
+      router.push("/").then(() => {
+        location.reload();
+      });
     })
-    .catch(error => {
-      console.log(error.message)
-    })
-}
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
 
-const handleSubmit = async e => {
-  console.log(userData)
+const handleSubmit = async (e) => {
+  let userData = {
+    email: email.value,
+    password: password.value,
+  };
+  console.log(userData);
   axios
-    .post('/user/login', userData)
-    .then(response => {
-      console.log(response)
-      let user = jwt_decode(response.data?.token)
-      let currentUser = user?.sub
+    .post("/user/login", userData)
+    .then((response) => {
+      console.log(response);
+      let user = jwt_decode(response.data?.token);
+      let currentUser = user?.sub;
 
-      localStorage.setItem('token', response?.data?.token)
-      localStorage.setItem('currentUser', currentUser)
-      localStorage.setItem('isAuth', true)
+      localStorage.setItem("token", response?.data?.token);
+      localStorage.setItem("currentUser", currentUser);
+      localStorage.setItem("isAuth", true);
 
-      router.push('/').then(() => {
-        location.reload()
-      })
+      router.push("/").then(() => {
+        location.reload();
+      });
     })
-    .catch(error => {
-      console.log(error.message)
-    })
-  e.preventDefault()
-}
+    .catch((error) => {
+      console.log(error.message);
+    });
+  e.preventDefault();
+};
 </script>

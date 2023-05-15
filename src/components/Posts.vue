@@ -16,7 +16,9 @@
           },
         }"
       >
-        <Section :delay="1200 + 300 * index + 1">
+        <Section
+          :delay="index - 5 < 0 ? 1200 + 300 * index : (index % 5) * 100"
+        >
           <div class="">
             <!-- top info -->
             <div

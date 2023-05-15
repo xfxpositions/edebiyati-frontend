@@ -141,7 +141,7 @@ import { ref, onMounted, onBeforeUnmount, toRaw, onBeforeMount } from "vue";
 import axiosUtil from "../../utils/axios.js";
 import { Vue3Lottie } from "vue3-lottie";
 import "vue3-lottie/dist/style.css";
-import heartJSON from "./heart.json";
+import heartJSON from "../../assets/heart.json";
 import commentJSON from "./comment.json";
 const isPlayingFirstPart = ref([]);
 const lottie = ref(null);

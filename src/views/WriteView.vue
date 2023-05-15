@@ -1,5 +1,10 @@
 <template>
   <div class="md:mx-32 md:my-24 my-14 mx-2">
+    <Toast
+      :title="notificationTitle"
+      :text="notificationText"
+      v-if="notificationIs"
+    ></Toast>
     <div class="p-12 flex flex-col gap-5">
       <input
         placeholder="Başlık"
@@ -27,17 +32,25 @@
         <TagSearch @on-tag-select="onTagSelect"></TagSearch>
       </div>
     </div>
-    <button
-      class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right fixed-button"
-      @click="qlUpload"
-    >
-      Gönder
-    </button>
+    <div class="flex w-full justify-end fixed bottom-0 right-0 p-3 gap-3">
+      <button
+        class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right ml-10"
+        @click="draftSave"
+      >
+        Taslağı Kaydet
+      </button>
+      <button
+        class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right"
+        @click="qlUpload"
+      >
+        Gönder
+      </button>
+    </div>
     <!--Sidenav-->
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
@@ -47,11 +60,33 @@ import turndown from "turndown";
 import axiosUtil from "../utils/axios.js";
 import TagSearch from "../components/TagSearch.vue";
 import ImageUpload from "../components/ImageUpload.vue";
+import axios from "axios";
+import Toast from "../components/Toast.vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const tags = ref([]);
 const selectedFile = ref(null);
 const title = ref("");
 const editorHtml = ref("");
+const notificationIs = ref(false);
+const notificationTitle = ref("Başarılı");
+const notificationText = ref("İşlem Okey");
+
+const draftSave = () => {
+  let content = {};
+  let html = document.querySelector(".ql-editor").innerHTML;
+  content.html = html;
+  const userId = localStorage.getItem("currentUser");
+  axiosUtil.post(`/user/update/${userId}`, { draft: content.html }).then(() => {
+    notificationIs.value = true;
+    notificationText.value = "Taslak Kaydedildi.";
+
+    setTimeout(() => {
+      notificationIs.value = false;
+    }, 2500);
+  });
+};
 
 const editorOptions = {
   modules: {
@@ -79,6 +114,14 @@ const onImageUpload = (e) => {
   console.log(e);
   selectedFile.value = e;
 };
+const draft = ref("");
+onMounted(() => {
+  const userId = localStorage.getItem("currentUser");
+  axiosUtil.get(`/user/fetch/${userId}`).then((response) => {
+    draft.value = response.data.draft;
+    document.querySelector(".ql-editor").innerHTML = draft.value;
+  });
+});
 
 const qlUpload = () => {
   //upload image
@@ -115,6 +158,22 @@ const qlUpload = () => {
         .post("/post/create", postData, { timeout: 10000 })
         .then((response) => {
           console.log("Post was successful:", response);
+          notificationIs.value = true;
+          notificationText.value = "Gönderiniz eklendi!";
+
+          setTimeout(() => {
+            notificationIs.value = false;
+            const postId = response.data.Post.insertedId.$oid;
+            router.push({
+              name: "SinglePost",
+              params: {
+                title: title.value.replace(/ /g, "-"),
+              },
+              query: {
+                id: postId,
+              },
+            });
+          }, 2500);
         })
         .catch((error) => {
           console.error("There was an error:", error);
@@ -128,9 +187,6 @@ const qlUpload = () => {
 
 <style scoped>
 .fixed-button {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
   z-index: 10;
 }
 .sidenav-container {

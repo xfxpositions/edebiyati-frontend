@@ -1,5 +1,5 @@
 <template>
-  <div class="fixed w-full top-0 left-0" ref="navbar2" style="z-index: 10">
+  <div class="fixed w-full top-0 left-0" ref="navbar2" style="z-index: 90">
     <nav class="flex justify-between bg-[rgb(23,23,23)] text-gray-50">
       <!-- logo, for later -->
       <div class="logo flex cursor-pointer ml-2 justify-center items-center">

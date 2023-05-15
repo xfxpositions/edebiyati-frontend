@@ -3,7 +3,7 @@
     class="container-fluid w-100 grid grid-cols-12 dark:bg-gray-900 bg-white dark:text-white px-10 lg:px-0"
   >
     <div class="reading-progress-bar">
-      <div class="progress-bar w-0" ref="progressbar"></div>
+      <div class="progress-bar w-0 z-10" ref="progressbar"></div>
     </div>
     <div class="col-span-12 lg:col-span-9 box3 grid grid-cols-12">
       <div class="col-span-2 hidden lg:block"></div>
@@ -13,7 +13,7 @@
             <router-link
               :to="{
                 name: 'ProfileHome',
-                params: { username: data.author },
+                params: { username: user.name },
               }"
             >
               <img
@@ -26,7 +26,7 @@
               <router-link
                 :to="{
                   name: 'ProfileHome',
-                  params: { username: data.author },
+                  params: { username: user.name },
                 }"
               >
                 <h2 class="text-lg font-semibold bg-white dark:text-white">
@@ -34,36 +34,51 @@
                 </h2>
               </router-link>
               <p
-                class="bg-white text-gray-500 dark:text-gray-300 justify-self-end w-full"
+                class="bg-white block md:inline-block text-gray-500 dark:text-gray-300 justify-self-end w-full"
               >
                 {{ data.fulldate }} . {{ data.read_time }} dakika
               </p>
             </div>
           </div>
           <div
-            class="h-full dark:text-slate-100 text-gray-900 font-bold text-lg"
+            class="h-full dark:text-slate-100 text-gray-900 text-lg flex items-center gap-x-4"
           >
-            <div class="flex justify-center items-center">
-              <!-- 
-              /> -->
+            <Vue3Lottie
+              v-if="fav"
+              :loop="false"
+              :animationData="favoriteJSON"
+              :autoPlay="true"
+              :height="20"
+              :width="20"
+              @click="addFav"
+            />
 
+            <font-awesome-icon
+              v-else
+              :icon="['far', 'star']"
+              class="cursor-pointer"
+              @click="addFav"
+            ></font-awesome-icon>
+
+            <div class="h-full flex items-center">
               <Vue3Lottie
-                v-if="fav"
-                :loop="false"
-                :animationData="favoriteJSON"
-                :autoPlay="true"
-                :height="20"
-                :width="20"
-                @click="addFav"
+                :loop="1"
+                :animationData="heartJSON"
+                :autoPlay="false"
+                :height="30"
+                :width="30"
+                :initial-frame="60"
+                style="cursor: pointer"
+                ref="likeButton"
+                @click="
+                  toggleLikeButton();
+                  togglelike(comment.id, index);
+                "
               />
-              <font-awesome-icon
-                v-else
-                :icon="['far', 'star']"
-                class="cursor-pointer"
-                @click="addFav"
-              ></font-awesome-icon>
+              {{ data.likes.length }}
             </div>
           </div>
+
           <div
             class="h-full dark:text-slate-100 text-slate-100 font-bold text-xs hidden sm:block"
           >
@@ -149,6 +164,50 @@ import { useRouter, useRoute } from "vue-router";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import favoriteJSON from "../assets/favorite.json";
 import { Vue3Lottie } from "vue3-lottie";
+import "vue3-lottie/dist/style.css";
+import heartJSON from "./../assets/heart.json";
+
+const isPlayingFirstPart = ref(true);
+const likeButton = ref(null);
+function toggleLikeButton() {
+  if (localStorage.getItem("currentUser")) {
+    axiosUtil
+      .post(
+        `/post/add_like_post/${id}?user_id=${localStorage.getItem(
+          "currentUser"
+        )}`
+      )
+      .then((response) => {
+        //notification.
+        if (response.data.isDeleted) {
+          data.value.likes.pop();
+        } else {
+          data.value.likes.push("userLiked");
+        }
+        console.log("like added");
+      });
+  } else {
+    console.log("giris yapilmadi");
+  }
+  if (isPlayingFirstPart.value) {
+    // Play the first part of the animation (frames 0-40)
+    likeButton.value.playSegments([0, 40], true);
+  } else {
+    // Play the second part of the animation (frames 40-75)
+    likeButton.value.playSegments([40, 75], true);
+  }
+  // Toggle the isPlayingFirstPart data property
+  isPlayingFirstPart.value = !isPlayingFirstPart.value;
+}
+
+onMounted(async () => {
+  setTimeout(() => {
+    if (data.value.likes.includes(localStorage.getItem("currentUser"))) {
+      likeButton.value.playSegments([40, 41], true);
+      isPlayingFirstPart.value = false;
+    }
+  }, 10);
+});
 
 const route = useRoute();
 const id = route.query.id;
