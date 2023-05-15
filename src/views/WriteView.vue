@@ -26,7 +26,10 @@
     <hr />
     <div class="grid sm:grid-cols-2 grid-cols-1 md:p-12 min-h-[400px]">
       <div class="p-12">
-        <ImageUpload @image-upload="onImageUpload"></ImageUpload>
+        <ImageUpload
+          :src="props.imageData ? props.imageData : ''"
+          @image-upload="onImageUpload"
+        ></ImageUpload>
       </div>
       <div class="p-12">
         <TagSearch @on-tag-select="onTagSelect"></TagSearch>
@@ -36,10 +39,19 @@
       <button
         class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right ml-10"
         @click="draftSave"
+        v-if="!props.isUpdate"
       >
         Taslağı Kaydet
       </button>
       <button
+        class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right"
+        @click="saveUpdate"
+        v-if="props.isUpdate"
+      >
+        Kaydet
+      </button>
+      <button
+        v-else
         class="bg-green-600 text-white rounded-full p-2 border-black inline-flex justify-end float-right"
         @click="qlUpload"
       >
@@ -65,10 +77,19 @@ import Toast from "../components/Toast.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const tags = ref([]);
+const props = defineProps([
+  "isUpdate",
+  "htmlData",
+  "titleData",
+  "tagsData",
+  "postId",
+  "imageData",
+]);
+
+const tags = ref(props.tagsData ? props.tagsData : []);
 const selectedFile = ref(null);
-const title = ref("");
-const editorHtml = ref("");
+const title = ref(props.titleData ? props.titleData : "");
+const editorHtml = ref(props.htmlData ? props.htmlData : "");
 const notificationIs = ref(false);
 const notificationTitle = ref("Başarılı");
 const notificationText = ref("İşlem Okey");
@@ -116,15 +137,66 @@ const onImageUpload = (e) => {
 };
 const draft = ref("");
 onMounted(() => {
-  const userId = localStorage.getItem("currentUser");
-  axiosUtil.get(`/user/fetch/${userId}`).then((response) => {
-    draft.value = response.data.draft;
-    document.querySelector(".ql-editor").innerHTML = draft.value;
-  });
+  if (props.htmlData || props.imageData) {
+    document.querySelector(".ql-editor").innerHTML = props.htmlData;
+  } else {
+    const userId = localStorage.getItem("currentUser");
+    axiosUtil.get(`/user/fetch/${userId}`).then((response) => {
+      draft.value = response.data.draft;
+      document.querySelector(".ql-editor").innerHTML = draft.value;
+    });
+  }
 });
+const saveUpdate = () => {
+  let image_url = props.imageData;
+  //post body
+  //html to markdown
+  var turndownService = new turndown();
+  let content = {};
+  let html = document.querySelector(".ql-editor").innerHTML;
+  console.log("html=?>" + html);
+  content.html = html;
+  content.markdown = turndownService.turndown(editorHtml.value);
 
+  let postData = {
+    date: Date.now(),
+    tags: tags.value,
+    content: content,
+    status: "Public",
+    image: image_url,
+    title: title.value,
+  };
+  console.log(postData);
+  let uri = `/post/update/${props.postId}`;
+
+  axiosUtil
+    .post(uri, postData, { timeout: 10000 })
+    .then((response) => {
+      console.log("Post was successful:", response);
+      notificationIs.value = true;
+      notificationText.value = "Gönderiniz eklendi!";
+
+      setTimeout(() => {
+        notificationIs.value = false;
+        const postId = response.data.Post.insertedId.$oid;
+        router.push({
+          name: "SinglePost",
+          params: {
+            title: title.value.replace(/ /g, "-"),
+          },
+          query: {
+            id: postId,
+          },
+        });
+      }, 2500);
+    })
+    .catch((error) => {
+      console.error("There was an error:", error);
+    });
+};
 const qlUpload = () => {
   //upload image
+
   let imageForm = new FormData();
   imageForm.append("image", selectedFile.value);
   const config = {
@@ -154,8 +226,12 @@ const qlUpload = () => {
         title: title.value,
       };
       console.log(postData);
+      // let uri = props.isUpdate
+      //   ? "/post/create"
+      //   : `/post/update/${props.postId}`;
+      let uri = "/post/create";
       axiosUtil
-        .post("/post/create", postData, { timeout: 10000 })
+        .post(uri, postData, { timeout: 10000 })
         .then((response) => {
           console.log("Post was successful:", response);
           notificationIs.value = true;

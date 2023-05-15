@@ -56,15 +56,7 @@
               <button class="group-hover:underline ml-1">Profilim</button>
             </router-link>
           </MenuItem>
-          <MenuItem class="px-1 pl-2">
-            <router-link
-              to="/posts/{userid}"
-              class="group px-1 py-1 rounded-md h-[100%] w-[100%] flex items-center hover:bg-slate-100 dark:hover:bg-slate-700 transition-all duration-300 ease-in-out"
-            >
-              <font-awesome-icon :icon="['fas', 'file-lines']" class="mr-1" />
-              <button class="group-hover:underline ml-1">Gönderilerim</button>
-            </router-link>
-          </MenuItem>
+
           <MenuItem class="px-1 pl-2">
             <router-link
               to="/favorites"

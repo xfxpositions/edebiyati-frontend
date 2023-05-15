@@ -74,13 +74,18 @@
   </div>
 </template>
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref, defineEmits, onMounted } from "vue";
 
 const emit = defineEmits(["inFocus", "imageUpload"]);
+const props = defineProps(["src"]);
 
 const fileInput = ref(null);
 const selectedFile = ref(null);
 const image = ref(null);
+
+onMounted(() => {
+  image.value = props.src;
+});
 
 const handleFileInput = (event) => {
   selectedFile.value = event.target.files[0];

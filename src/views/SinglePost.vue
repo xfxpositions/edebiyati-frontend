@@ -1,4 +1,9 @@
 <template>
+  <Toast
+    title="Uçmağa vardı."
+    text="Bu gönderi bozkırda kaybolup gitti.."
+    v-if="isDeleted"
+  ></Toast>
   <div
     class="container-fluid w-100 grid grid-cols-12 dark:bg-gray-900 bg-white dark:text-white px-10 lg:px-0"
   >
@@ -40,6 +45,7 @@
               </p>
             </div>
           </div>
+
           <div
             class="h-full dark:text-slate-100 text-gray-900 text-lg flex items-center gap-x-4"
           >
@@ -155,6 +161,83 @@
       ></Comments>
     </Transition>
   </div>
+  <div v-if="hisOwn" class="flex gap-5 justify-center items-center p-5">
+    <router-link
+      :to="'/update?id=' + id"
+      class="bg-green-600 text-white rounded-full p-2 border-black"
+    >
+      Gönderiyi Düzenle
+    </router-link>
+
+    <button
+      class="bg-red-600 text-white rounded-full p-2 border-black"
+      @click="openModal"
+    >
+      Gönderiyi Sil
+    </button>
+    <TransitionRoot appear :show="isOpen" as="template">
+      <Dialog as="div" @close="closeModal" class="relative z-10">
+        <TransitionChild
+          as="template"
+          enter="duration-300 ease-out"
+          enter-from="opacity-0"
+          enter-to="opacity-100"
+          leave="duration-200 ease-in"
+          leave-from="opacity-100"
+          leave-to="opacity-0"
+        >
+          <div class="fixed inset-0 bg-black bg-opacity-25" />
+        </TransitionChild>
+
+        <div class="fixed inset-0 overflow-y-auto">
+          <div
+            class="flex min-h-full items-center justify-center p-4 text-center"
+          >
+            <TransitionChild
+              as="template"
+              enter="duration-300 ease-out"
+              enter-from="opacity-0 scale-95"
+              enter-to="opacity-100 scale-100"
+              leave="duration-200 ease-in"
+              leave-from="opacity-100 scale-100"
+              leave-to="opacity-0 scale-95"
+            >
+              <DialogPanel
+                class="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
+              >
+                <DialogTitle
+                  as="h3"
+                  class="text-lg font-medium leading-6 text-gray-900"
+                >
+                  Silmek istediğinizden emin misiniz?
+                </DialogTitle>
+                <div class="mt-2">
+                  <p class="text-sm text-gray-500">Bu işlem geri alınamaz</p>
+                </div>
+
+                <div class="mt-4 flex gap-4">
+                  <button
+                    type="button"
+                    class="inline-flex bg-red-600 text-white justify-center rounded-md border border-transparent px-4 py-2 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    @click="deletePost"
+                  >
+                    Sil
+                  </button>
+                  <button
+                    type="button"
+                    class="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    @click="closeModal"
+                  >
+                    Vazgeç
+                  </button>
+                </div>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
+        </div>
+      </Dialog>
+    </TransitionRoot>
+  </div>
 </template>
 
 <script setup>
@@ -166,7 +249,25 @@ import favoriteJSON from "../assets/favorite.json";
 import { Vue3Lottie } from "vue3-lottie";
 import "vue3-lottie/dist/style.css";
 import heartJSON from "./../assets/heart.json";
+import Toast from "../components/Toast.vue";
+import {
+  TransitionRoot,
+  TransitionChild,
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/vue";
+import router from "../router/router";
+import { modalstate } from "../modalState";
+const isOpen = ref(false);
 
+function closeModal() {
+  isOpen.value = false;
+}
+function openModal() {
+  isOpen.value = true;
+}
+const hisOwn = ref(false);
 const isPlayingFirstPart = ref(true);
 const likeButton = ref(null);
 function toggleLikeButton() {
@@ -220,9 +321,23 @@ const getuser = (userid) => {
     user.value = result.data;
   });
 };
+const isDeleted = ref(false);
+const deletePost = () => {
+  axiosUtil.delete(`/post/delete/${id}`).then((response) => {
+    isDeleted.value = true;
+    isOpen.value = false;
+
+    setTimeout(() => {
+      router.push("/");
+    }, 2500);
+  });
+};
 
 onMounted(() => {
   let currentUser = localStorage.getItem("currentUser");
+  if (data.value.author == currentUser) {
+    hisOwn.value = true;
+  }
   if (currentUser) {
     axiosUtil.get("/user/fetch/" + currentUser).then((result) => {
       for (const post_id of result.data.favorites) {
