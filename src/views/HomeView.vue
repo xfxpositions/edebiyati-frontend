@@ -14,7 +14,7 @@
       <h2
         class="mb-4 text-xl font-bold tracking-tight text-gray-900 lg:text-2xl lg:leading-none dark:text-white lg:mb-7"
       >
-        Edebiyati.org sayesinde diller ve edebiyat hakkında yeni şeyler
+        Bitigin.org sayesinde diller ve edebiyat hakkında yeni şeyler
         öğrenebilirsiniz.
       </h2>
       <RouterLink to="/posts">
