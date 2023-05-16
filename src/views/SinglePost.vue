@@ -161,7 +161,7 @@
       ></Comments>
     </Transition>
   </div>
-  <div v-if="hisOwn" class="flex gap-5 justify-center items-center p-5">
+  <div class="flex gap-5 justify-center items-center p-5">
     <router-link
       :to="'/update?id=' + id"
       class="bg-green-600 text-white rounded-full p-2 border-black"
