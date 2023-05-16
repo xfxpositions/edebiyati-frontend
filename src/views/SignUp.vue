@@ -169,6 +169,18 @@ const handleGoogle = (code) => {
       userToSend.registred_via = "Google";
       userToSend.avatar = googleData.picture;
       userToSend.name = googleData.given_name;
+      axios
+        .post("/user/create", userToSend)
+        .then((response) => {
+          if (response.status == 200) {
+            responseText.value == "Başarılı, Edebiyati.org'a hoşgeldiniz!";
+          }
+          console.log(response);
+          router.push({ path: "/signin" });
+        })
+        .catch((error) => {
+          console.log(error.message);
+        });
     })
     .catch((error) => {
       console.error(error);
